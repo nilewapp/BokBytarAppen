@@ -21,10 +21,21 @@ import java.security.KeyStore;
 import android.content.Context;
 import android.content.res.Resources;
 
+/**
+ * Provides functionality to load key stores from the resources
+ * @author nilewapp
+ *
+ */
 public class TrustStore {
     
     private static KeyStore keyStore = null;
     
+    /**
+     * Lazily loads the key store from resources
+     * @param context
+     * @return
+     * @throws Exception
+     */
     public static KeyStore get(Context context) throws Exception {
         if (keyStore == null) {
             KeyStore trustStore = KeyStore.getInstance("BKS");
