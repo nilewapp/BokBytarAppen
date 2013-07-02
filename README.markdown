@@ -13,7 +13,7 @@ buy, sell and share student literature.
 
 1. Clone the repository into an Eclipse workspace
 
-        $ cd <your workspace>
+        $ cd \<your workspace\>
         $ git clone https://github.com/nilewapp/BokBytarAppen.git
 
 2. Import the project in Eclipse with File > Import > Android > Existing Android Code Into Workspace
