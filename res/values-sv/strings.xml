@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Swedish locale -->
+<resources>
+
+    <string name="logo_description">App logotyp</string>
+    <string name="action_settings">Inställningar</string>
+    <string name="login">Logga in med Facebook...</string>
+    <string name="logout">Logga ut</string>
+    
+    <string name="profile">Profil</string>
+    <string name="want">Behöver</string>
+    <string name="have">Har</string>
+    <string name="university">Universitet</string>
+    <string name="uninitialised_university_help">Klicka här för att ange ditt universitet</string>
+    <string name="cancel">Avbryt</string>
+    <string name="choose_university">Välj ditt universitet</string>
+	<string name="university_request_error_message">Kunde inte hämta listan av universitet.</string>
+    
+</resources>

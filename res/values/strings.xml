@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Default strings in English -->
+<resources>
+
+    <string name="app_name">Bokbytarappen</string>
+    <string name="app_id">150991205076933</string>
+
+    <!-- Localised strings -->
+    <string name="logo_description">App logotype</string>
+    <string name="action_settings">Settings</string>
+    <string name="login">Log in with Facebook...</string>
+    <string name="logout">Log out</string>
+    <string name="profile">Profile</string>
+    <string name="want">Want</string>
+    <string name="have">Have</string>
+    <string name="university">University</string>
+    <string name="uninitialised_university_help">Click to specify your university</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="choose_university">Choose your university</string>
+    <string name="university_request_error_message">Could not retrieve the list of universities.</string>
+
+    <!-- Preference keys -->
+    <string name="setting_university_key">university_key</string>
+    <string name="username_key">username_key</string>
+    <string name="profile_pic_filename">profile_pic_filename.png</string>
+    <string name="title_activity_profile">ProfileActivity</string>
+    <string name="profile_id_key">profile_id_key</string>
+    
+    <string name="truststore_password">leenocknaniwa</string>
+    <string name="server_url">https://192.168.0.25:8443/</string>
+    <string name="register_url">register/</string>
+    <string name="university_url">universities/</string>
+
+</resources>

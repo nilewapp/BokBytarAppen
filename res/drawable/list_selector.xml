@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+	<!--  Active Row-->
+	<item android:state_selected="true" android:state_focused="false"
+	    android:state_pressed="false" android:drawable="@android:drawable/list_selector_background" />
+	
+	<!--  Inactive Row-->
+	<item android:state_selected="false" android:state_focused="false"
+	    android:state_pressed="false" android:drawable="@android:drawable/screen_background_light" />
+	
+	<!--  Pressed Row -->
+	<item android:state_pressed="true" android:drawable="@android:drawable/list_selector_background" />
+	
+	<!--  Selected Row (using d-pad) -->
+	<item android:state_focused="true" android:state_selected="true"
+	    android:state_pressed="false" android:drawable="@android:drawable/list_selector_background" />
+</selector>
