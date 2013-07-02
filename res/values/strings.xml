@@ -27,7 +27,7 @@
     <string name="title_activity_profile">ProfileActivity</string>
     <string name="profile_id_key">profile_id_key</string>
     
-    <string name="truststore_password">leenocknaniwa</string>
+    <string name="truststore_password">testpassword</string>
     <string name="server_url">https://192.168.0.25:8443/</string>
     <string name="register_url">register/</string>
     <string name="university_url">universities/</string>
