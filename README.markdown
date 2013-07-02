@@ -26,8 +26,4 @@ projects in Properties > Java Build Path > Projects.
 
 ### Using the app with the server
 
-1. Clone the server repository
-
-    $ git clone https://github.com/nilewapp/BokBytarAppenServer.git
-
-2. Follow the steps in <server directory>/README.markdown 
+Follow the instructions listed in the server repository [README](https://github.com/nilewapp/BokBytarAppenServer)
