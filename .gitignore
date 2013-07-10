@@ -19,3 +19,4 @@ local.properties
 *.class
 proguard-project.txt
 *.bks
+/res/values/secret.xml
