@@ -29,8 +29,17 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.test.suitebuilder.annotation.Suppress;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 public class MainActivity extends SherlockFragmentActivity {
+    
+    private String[] drawerItems = {"First", "Second", "Third", "Fourth"};
+    private ListView drawerList;
     
     private Session.StatusCallback statusCallback = new Session.StatusCallback() {
         @Override
@@ -43,6 +52,18 @@ public class MainActivity extends SherlockFragmentActivity {
         }
     };
     
+    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView parent, View view, int position, long id) {
+            setTitle(drawerItems[position]);
+        }
+    }
+
+    @Override
+    public void setTitle(CharSequence title) {
+        getActionBar().setTitle(title);
+    }
+    
     private FacebookActivity fbActivity = new FacebookActivity(this, statusCallback);
     
     @Override
@@ -51,23 +72,12 @@ public class MainActivity extends SherlockFragmentActivity {
         
         /* Set layout */
         setContentView(R.layout.activity_main);
-        
-        /* Add tabs */
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        
-        Tab tab = actionBar.newTab()
-                .setText(R.string.want)
-                .setTabListener(new TabListener<MainActivity, WantFragment>(
-                        this, null, WantFragment.class));
-        actionBar.addTab(tab);
-        
-        tab = actionBar.newTab()
-                .setText(R.string.have)
-                .setTabListener(new TabListener<MainActivity, HaveFragment>(
-                        this, null, HaveFragment.class));
-        actionBar.addTab(tab);
-        
+        /* Initialise navigation drawer */
+        drawerList = (ListView) findViewById(R.id.left_drawer);
+        drawerList.setAdapter(new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, drawerItems));
+        drawerList.setOnItemClickListener(new DrawerItemClickListener());
+  
         /* Restore Facebook session */
         fbActivity.restoreSession(savedInstanceState);
         
