@@ -15,8 +15,6 @@
  */
 package com.mooo.nilewapps.bokbytarappen;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.Tab;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -29,8 +27,6 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.test.suitebuilder.annotation.Suppress;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -53,6 +49,7 @@ public class MainActivity extends SherlockFragmentActivity {
     };
     
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
+        @SuppressWarnings("rawtypes")
         @Override
         public void onItemClick(AdapterView parent, View view, int position, long id) {
             setTitle(drawerItems[position]);
@@ -72,6 +69,7 @@ public class MainActivity extends SherlockFragmentActivity {
         
         /* Set layout */
         setContentView(R.layout.activity_main);
+        
         /* Initialise navigation drawer */
         drawerList = (ListView) findViewById(R.id.left_drawer);
         drawerList.setAdapter(new ArrayAdapter<String>(this,
