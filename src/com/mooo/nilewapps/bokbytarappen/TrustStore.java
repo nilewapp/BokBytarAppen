@@ -15,14 +15,18 @@
  */
 package com.mooo.nilewapps.bokbytarappen;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 
 import android.content.Context;
 import android.content.res.Resources;
 
 /**
- * Provides functionality to load key stores from the resources
+ * Provides functionality to load SSL key stores from the resources
  * @author nilewapp
  *
  */
@@ -34,9 +38,17 @@ public class TrustStore {
      * Lazily loads the key store from resources
      * @param context
      * @return
+     * @throws KeyStoreException 
+     * @throws IOException 
+     * @throws CertificateException 
+     * @throws NoSuchAlgorithmException 
      * @throws Exception
      */
-    public static KeyStore get(Context context) throws Exception {
+    public static KeyStore get(Context context) 
+            throws KeyStoreException, 
+                   NoSuchAlgorithmException, 
+                   CertificateException, 
+                   IOException {
         if (keyStore == null) {
             KeyStore trustStore = KeyStore.getInstance("BKS");
             Resources res = context.getResources();

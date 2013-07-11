@@ -30,7 +30,7 @@ import com.facebook.model.GraphUser;
 import com.facebook.widget.ProfilePictureView;
 
 import com.mooo.nilewapps.androidnilewapp.FilterableListDialogFragment;
-import com.mooo.nilewapps.androidnilewapp.PreferenceUtil;
+import com.mooo.nilewapps.androidnilewapp.Preferences;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
@@ -73,14 +73,14 @@ public class ProfileFragment extends SherlockFragment
         final String uninitialisedUniversityHelp = 
                 activity.getResources().getText(R.string.uninitialised_university_help).toString();
         university.setText(
-                PreferenceUtil.getPreference(
+                Preferences.get(
                         activity,
                         R.string.setting_university_key,
                         uninitialisedUniversityHelp));
     }
 
     private void storeUniversity(String item) {
-        PreferenceUtil.storePreference(getActivity(), R.string.setting_university_key, item);
+        Preferences.put(getActivity(), R.string.setting_university_key, item);
     }
     
     private void createProfileHeader(final View view) {
@@ -88,7 +88,7 @@ public class ProfileFragment extends SherlockFragment
         final ProfilePictureView pv = (ProfilePictureView) view.findViewById(R.id.profile_pic);
         
         /* Show stored username */
-        tv.setText(PreferenceUtil.getPreference(getActivity(), R.string.username_key, ""));
+        tv.setText(Preferences.get(getActivity(), R.string.username_key, ""));
         
         Request request = Request.newMeRequest(Session.getActiveSession(), new Request.GraphUserCallback() {
             @Override
@@ -99,7 +99,7 @@ public class ProfileFragment extends SherlockFragment
                     if (!username.equals(tv.getText().toString())) {
                         /* Update the shown username if it is different from the stored one */
                         tv.setText(username);
-                        PreferenceUtil.storePreference(getActivity(), R.string.username_key, username);
+                        Preferences.put(getActivity(), R.string.username_key, username);
                     }
                     
                     /* Show profile picture */

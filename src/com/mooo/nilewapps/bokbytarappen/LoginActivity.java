@@ -19,7 +19,6 @@ import android.os.Bundle;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockActivity;
 
@@ -28,7 +27,8 @@ import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.model.GraphUser;
-import com.mooo.nilewapps.androidnilewapp.PreferenceUtil;
+import com.mooo.nilewapps.androidnilewapp.Password;
+import com.mooo.nilewapps.androidnilewapp.Preferences;
 
 /**
  * Handles login to Facebook and registration with the server
@@ -37,15 +37,21 @@ import com.mooo.nilewapps.androidnilewapp.PreferenceUtil;
  */
 public class LoginActivity extends SherlockActivity {
     
-    private void storeProfileId(String id) {
-        try {
-            Registry reg = new Registry(id);
-            reg.register(this);
-            PreferenceUtil.storePreference(this, R.string.profile_id_key, id);
-        } catch (Exception e) {
-            Toast t = Toast.makeText(this, "Failed to store profile id.", Toast.LENGTH_SHORT);
-            t.show();
-            e.printStackTrace();
+    private void registerUser(String id) {
+        String storedId = Preferences.get(this, R.string.profile_id_key);
+        
+        /* User not registered */
+        if (!id.equals(storedId)) {
+            /* Generate password */
+            String password = Password.generate();
+            
+            /* Register with server */
+            Registry reg = new Registry();
+            reg.register(this, id, password);
+            
+            /* Store id and password locally */
+            Preferences.put(this, R.string.profile_id_key, id);
+            Preferences.put(this, R.string.password_key, password);
         }
     }
     
@@ -53,7 +59,7 @@ public class LoginActivity extends SherlockActivity {
         @Override
         public void onCompleted(GraphUser user, Response response) {
             if (user != null) {
-                storeProfileId(user.getId());
+                registerUser(user.getId());
             }
         }
     };
