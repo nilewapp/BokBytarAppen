@@ -28,7 +28,7 @@ import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.model.GraphUser;
-import com.mooo.nilewapps.androidnilewapp.PreferenceUtil;
+import com.mooo.nilewapps.androidnilewapp.Preferences;
 
 /**
  * Handles login to Facebook and registration with the server
@@ -41,7 +41,7 @@ public class LoginActivity extends SherlockActivity {
         try {
             Registry reg = new Registry(id);
             reg.register(this);
-            PreferenceUtil.storePreference(this, R.string.profile_id_key, id);
+            Preferences.put(this, R.string.profile_id_key, id);
         } catch (Exception e) {
             Toast t = Toast.makeText(this, "Failed to store profile id.", Toast.LENGTH_SHORT);
             t.show();
