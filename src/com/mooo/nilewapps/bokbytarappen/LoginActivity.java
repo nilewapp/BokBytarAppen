@@ -41,7 +41,7 @@ public class LoginActivity extends SherlockActivity {
         String storedId = Preferences.get(this, R.string.profile_id_key);
         
         /* User not registered */
-        if (!id.equals(storedId)) {
+        //if (!id.equals(storedId)) {
             /* Generate password */
             String password = Password.generate();
             
@@ -52,7 +52,7 @@ public class LoginActivity extends SherlockActivity {
             /* Store id and password locally */
             Preferences.put(this, R.string.profile_id_key, id);
             Preferences.put(this, R.string.password_key, password);
-        }
+        //}
     }
     
     private Request.GraphUserCallback storeProfileIdCallback = new Request.GraphUserCallback() {

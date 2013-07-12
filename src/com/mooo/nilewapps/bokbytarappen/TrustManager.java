@@ -30,7 +30,7 @@ import android.content.res.Resources;
  * @author nilewapp
  *
  */
-public class TrustStore {
+public class TrustManager {
     
     private static KeyStore keyStore = null;
     
@@ -44,7 +44,7 @@ public class TrustStore {
      * @throws NoSuchAlgorithmException 
      * @throws Exception
      */
-    public static KeyStore get(Context context) 
+    public static KeyStore getKeyStore(Context context) 
             throws KeyStoreException, 
                    NoSuchAlgorithmException, 
                    CertificateException, 

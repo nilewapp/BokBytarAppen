@@ -19,7 +19,6 @@ import java.security.KeyStore;
 import java.util.ArrayList;
 
 import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -42,21 +41,19 @@ public class Registry {
         
         private Exception e = null;
         private final Context context;
+        private final String url;
         
         public RegisterTask(Context context) {
             this.context = context;
+            Resources res = context.getResources();
+            url = res.getString(R.string.server_url) + res.getString(R.string.register_url);
         }
         
         @Override
         protected String doInBackground(String... urls) {
             try {
-                KeyStore trustStore = TrustStore.get(context);
-                
-                ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-                params.add(new BasicNameValuePair("id", id));
-                params.add(new BasicNameValuePair("password", password));
-                
-                return HttpPostString.request(trustStore, urls[0], params);
+                KeyStore trustStore = TrustManager.getKeyStore(context);
+                return HttpPostString.request(trustStore, url, id, password, new ArrayList<NameValuePair>());
             } catch (Exception e) {
                 this.e = e;
                 return null;
@@ -69,7 +66,7 @@ public class Registry {
                 Log.e("Registry", "Uncaught exception", e);
             }
             if (response == null) {
-                Log.e("Registry", "Communication with server failded");
+                Log.e("Registry", "Communication with server failed");
             } else if (!response.isEmpty()) {
                 Log.w("Registry", response);
             } else {
@@ -81,9 +78,7 @@ public class Registry {
     public void register(Context context, String id, String password) {        
         this.id = id;
         this.password = password;
-        Resources res = context.getResources();
-        String url = res.getString(R.string.server_url) + res.getString(R.string.register_url);
-        new RegisterTask(context).execute(url);
+        new RegisterTask(context).execute();
     }
     
 }

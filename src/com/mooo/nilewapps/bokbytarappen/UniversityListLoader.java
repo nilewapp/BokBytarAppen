@@ -58,7 +58,7 @@ public class UniversityListLoader extends AsyncTaskLoader<List<String>> {
         JSONArray arr = null;
         List<String> universities = new ArrayList<String>();
         try {
-            KeyStore trustStore = TrustStore.get(getContext());
+            KeyStore trustStore = TrustManager.getKeyStore(getContext());
             
             /* Request the json formated list of unis */
             for (int i = 0; json == null && i < NUM_TRIES; i++) {
