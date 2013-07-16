@@ -32,11 +32,6 @@ public class UniversityListDialog extends FilterableListDialogFragment
     private static final String COUNTRY_KEY = "country";
     
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-    
-    @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
         Bundle args = new Bundle();

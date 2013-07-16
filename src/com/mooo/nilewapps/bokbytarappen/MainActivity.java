@@ -20,13 +20,11 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.MenuItem.OnMenuItemClickListener;
 
-import com.facebook.Session;
-import com.facebook.SessionState;
-
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -36,17 +34,6 @@ public class MainActivity extends SherlockFragmentActivity {
     
     private String[] drawerItems = {"First", "Second", "Third", "Fourth"};
     private ListView drawerList;
-    
-    private Session.StatusCallback statusCallback = new Session.StatusCallback() {
-        @Override
-        public void call(Session session, SessionState state, Exception exception) {
-            /* Switch to login activity */
-            if (session.isClosed()) {
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(intent);
-            }
-        }
-    };
     
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @SuppressWarnings("rawtypes")
@@ -61,8 +48,6 @@ public class MainActivity extends SherlockFragmentActivity {
         getActionBar().setTitle(title);
     }
     
-    private FacebookActivity fbActivity = new FacebookActivity(this, statusCallback);
-    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,34 +60,14 @@ public class MainActivity extends SherlockFragmentActivity {
         drawerList.setAdapter(new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, drawerItems));
         drawerList.setOnItemClickListener(new DrawerItemClickListener());
-  
-        /* Restore Facebook session */
-        fbActivity.restoreSession(savedInstanceState);
         
-    }
-    
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        fbActivity.onActivityResult(this, requestCode, resultCode, data);
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        fbActivity.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        fbActivity.onStart();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        fbActivity.onStop();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        RegistrationFragment fragment = new RegistrationFragment();
+        fragmentManager
+            .beginTransaction()
+            .replace(R.id.content_frame, fragment, "register")
+            .commit();
+        
     }
     
     @Override
@@ -136,7 +101,6 @@ public class MainActivity extends SherlockFragmentActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
         case R.id.logout:
-            fbActivity.logout();
             return true;
         default:
             return super.onOptionsItemSelected(item);

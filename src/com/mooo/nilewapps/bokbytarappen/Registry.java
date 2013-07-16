@@ -19,6 +19,7 @@ import java.security.KeyStore;
 import java.util.ArrayList;
 
 import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -34,7 +35,10 @@ import com.mooo.nilewapps.androidnilewapp.HttpPostString;
  */
 public class Registry {
     
-    private String id;
+    private String email;
+    private String name;
+    private String phone;
+    private String university;
     private String password;
     
     class RegisterTask extends AsyncTask<String, Void, String> {
@@ -53,7 +57,20 @@ public class Registry {
         protected String doInBackground(String... urls) {
             try {
                 KeyStore trustStore = TrustManager.getKeyStore(context);
-                return HttpPostString.request(trustStore, url, id, password, new ArrayList<NameValuePair>());
+
+                ArrayList<NameValuePair> body;
+                if (phone != null) {
+                    body = new ArrayList<NameValuePair>(5);
+                    body.add(new BasicNameValuePair("phone", phone));
+                } else {
+                    body = new ArrayList<NameValuePair>(4);
+                }
+                body.add(new BasicNameValuePair("email", email));
+                body.add(new BasicNameValuePair("name", name));
+                body.add(new BasicNameValuePair("university", university));
+                body.add(new BasicNameValuePair("password", password));
+                
+                return HttpPostString.request(trustStore, url, body);
             } catch (Exception e) {
                 this.e = e;
                 return null;
@@ -68,15 +85,18 @@ public class Registry {
             if (response == null) {
                 Log.e("Registry", "Communication with server failed");
             } else if (!response.isEmpty()) {
-                Log.w("Registry", response);
+                Log.i("Registry", response);
             } else {
                 Log.i("Registry", "Successfully registered user with server");
             }
         }
     }
     
-    public void register(Context context, String id, String password) {        
-        this.id = id;
+    public void register(Context context, String email, String name, String phone, String university, String password) {        
+        this.email = email;
+        this.name = name;
+        this.phone = phone;
+        this.university = university;
         this.password = password;
         new RegisterTask(context).execute();
     }

@@ -30,5 +30,11 @@
     <string name="cancel">Avbryt</string>
     <string name="choose_university">Välj ditt universitet</string>
 	<string name="university_request_error_message">Kunde inte hämta listan av universitet.</string>
+	
+	<string name="password">Lösenord</string>
+	<string name="confirm_password">Bekräfta Lösenord</string>
+    <string name="register">Registrera</string>
+    <string name="phone_number">Telefonnummer</string>
+    <string name="name">Namn</string>
     
 </resources>

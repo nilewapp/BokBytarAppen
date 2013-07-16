@@ -26,31 +26,15 @@
     android:divider="@android:drawable/divider_horizontal_bright"
     android:showDividers="middle" >
     
-	<LinearLayout
-        android:layout_width="fill_parent"
+    <TextView
+        android:id="@+id/user_name"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-	    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-	    android:layout_marginRight="@dimen/activity_horizontal_margin"
-	    android:layout_marginTop="@dimen/activity_vertical_margin"
-	    android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:gravity="left"
-        android:orientation="horizontal" >
-	    <com.facebook.widget.ProfilePictureView
-            android:id="@+id/profile_pic"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-        	android:gravity="left"
-            facebook:preset_size="small" />
-	    <TextView
-            android:id="@+id/user_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-        	android:gravity="left"
-            android:layout_marginLeft="10dp"
-            android:textColor="#333"
-            android:textSize="26sp"
-            android:textIsSelectable="true" />
-	</LinearLayout>
+        android:layout_marginLeft="10dp"
+        android:textColor="#333"
+        android:textSize="26sp"
+        android:textIsSelectable="true" />
 	
 	<LinearLayout
         android:id="@+id/setting_university"

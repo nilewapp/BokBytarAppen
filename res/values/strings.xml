@@ -31,5 +31,11 @@
     <string name="cancel">Cancel</string>
     <string name="choose_university">Choose your university</string>
     <string name="university_request_error_message">Could not retrieve the list of universities.</string>
-
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="register">Register</string>
+    <string name="phone_number">Phone number</string>
+    <string name="name">Name</string>
+    
 </resources>
