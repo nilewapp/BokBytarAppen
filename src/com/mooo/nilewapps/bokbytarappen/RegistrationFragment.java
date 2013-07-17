@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
@@ -38,7 +39,8 @@ public class RegistrationFragment extends SherlockFragment
             ViewGroup container, 
             Bundle savedInstanceState) {
         
-        final LinearLayout view = (LinearLayout) inflater.inflate(R.layout.fragment_registration, null, false);
+        final ScrollView layout = (ScrollView) inflater.inflate(R.layout.fragment_registration, null, false);
+        final LinearLayout view = (LinearLayout) layout.findViewById(R.id.registration_view);
         
         final LinearLayout university = (LinearLayout) view.findViewById(R.id.setting_university);
         university.setOnClickListener(new View.OnClickListener() {
@@ -60,7 +62,23 @@ public class RegistrationFragment extends SherlockFragment
             }
         });
         
-        return view;
+        final Button unregister = (Button) view.findViewById(R.id.unregister);
+        unregister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                unregisterUser();
+            }
+        });
+
+        final Button tokenAuthentication = (Button) view.findViewById(R.id.tokenauthentication);
+        tokenAuthentication.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tokenAuthenticateUser();
+            }
+        });
+        
+        return layout;
         
     }
 
@@ -88,8 +106,20 @@ public class RegistrationFragment extends SherlockFragment
         String email      = getTextFromId(R.id.email);
         String name       = getTextFromId(R.id.name);
         String phone      = getTextFromId(R.id.phone);
-        String university = getTextFromId(R.id.setting_university_value);
+        String university = Preferences.get(getActivity(), R.string.setting_university_key);
         String password   = getTextFromId(R.id.password);
         new Registry().register(getActivity(), email, name, phone, university, password);
+    }
+    
+    private void unregisterUser() {
+        String email    = getTextFromId(R.id.email);
+        String password = getTextFromId(R.id.password);
+        new Registry().unregister(getActivity(), email, password);
+    }
+
+
+    private void tokenAuthenticateUser() {
+        String email = getTextFromId(R.id.email);
+        new ServerTokenAuthenticationTest().unregisterUser(getActivity(), email, "123", "456");
     }
 }

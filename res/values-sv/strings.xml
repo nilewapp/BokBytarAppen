@@ -34,6 +34,7 @@
 	<string name="password">Lösenord</string>
 	<string name="confirm_password">Bekräfta Lösenord</string>
     <string name="register">Registrera</string>
+    <string name="unregister">Avregistrera</string>
     <string name="phone_number">Telefonnummer</string>
     <string name="name">Namn</string>
     

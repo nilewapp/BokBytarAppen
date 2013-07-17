@@ -56,7 +56,7 @@ public class ProfileFragment extends SherlockFragment
         return view;
         
     }
-
+    
     public void onDialogItemClick(String university) {
         storeUniversity(university);
         updateUniversityTextView((TextView) getView().findViewById(R.id.setting_university_value));

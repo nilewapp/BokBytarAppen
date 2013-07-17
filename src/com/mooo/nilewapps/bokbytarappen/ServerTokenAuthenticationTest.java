@@ -29,18 +29,16 @@ import android.util.Log;
 import com.mooo.nilewapps.androidnilewapp.HttpPostString;
 
 /**
- * Registers a user with the server
+ * Class only used to test the the token authentication functionality of the server
  * @author nilewapp
  *
  */
-public class Registry {
+public class ServerTokenAuthenticationTest {
     
     private String email;
-    private String name;
-    private String phone;
-    private String university;
-    private String password;
-
+    private String series;
+    private String token;
+    
     class UnregisterTask extends AsyncTask<String, Void, String> {
         
         private Exception e = null;
@@ -51,44 +49,7 @@ public class Registry {
             this.context = context;
             Resources res = context.getResources();
             url = res.getString(R.string.server_url) + res.getString(R.string.unregister_url);
-        }
-        
-        @Override
-        protected String doInBackground(String... urls) {
-            try {
-                KeyStore trustStore = TrustManager.getKeyStore(context);
-                return HttpPostString.request(trustStore, url, email, password, new ArrayList<NameValuePair>());
-            } catch (Exception e) {
-                this.e = e;
-                return null;
-            }
-        }
-        
-        @Override
-        protected void onPostExecute(String response) {
-            if (e != null) {
-                Log.e("Registry", "Uncaught exception", e);
-            }
-            if (response == null) {
-                Log.e("Registry", "Communication with server failed");
-            } else if (!response.isEmpty()) {
-                Log.i("Registry", response);
-            } else {
-                Log.i("Registry", "Successfully unregistered user with server");
-            }
-        }
-    }
-    
-    class RegisterTask extends AsyncTask<String, Void, String> {
-        
-        private Exception e = null;
-        private final Context context;
-        private final String url;
-        
-        public RegisterTask(Context context) {
-            this.context = context;
-            Resources res = context.getResources();
-            url = res.getString(R.string.server_url) + res.getString(R.string.register_url);
+            Log.i(this.toString(), "url: " + url);
         }
         
         @Override
@@ -96,17 +57,10 @@ public class Registry {
             try {
                 KeyStore trustStore = TrustManager.getKeyStore(context);
 
-                ArrayList<NameValuePair> body;
-                if (phone != null) {
-                    body = new ArrayList<NameValuePair>(5);
-                    body.add(new BasicNameValuePair("phone", phone));
-                } else {
-                    body = new ArrayList<NameValuePair>(4);
-                }
+                ArrayList<NameValuePair> body = new ArrayList<NameValuePair>(3);
                 body.add(new BasicNameValuePair("email", email));
-                body.add(new BasicNameValuePair("name", name));
-                body.add(new BasicNameValuePair("university", university));
-                body.add(new BasicNameValuePair("password", password));
+                body.add(new BasicNameValuePair("series", series));
+                body.add(new BasicNameValuePair("token", token));
                 
                 return HttpPostString.request(trustStore, url, body);
             } catch (Exception e) {
@@ -130,19 +84,10 @@ public class Registry {
         }
     }
     
-    public void register(Context context, String email, String name, String phone, String university, String password) {        
+    public void unregisterUser(Context context, String email, String series, String token) {
         this.email = email;
-        this.name = name;
-        this.phone = phone;
-        this.university = university;
-        this.password = password;
-        new RegisterTask(context).execute();
-    }
-    
-    public void unregister(Context context, String email, String password) {
-        this.email = email;
-        this.password = password;
+        this.series = series;
+        this.token = token;
         new UnregisterTask(context).execute();
     }
-    
 }

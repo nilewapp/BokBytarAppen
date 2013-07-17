@@ -35,7 +35,9 @@
     <string name="password">Password</string>
     <string name="confirm_password">Confirm password</string>
     <string name="register">Register</string>
+    <string name="unregister">Unregister</string>
     <string name="phone_number">Phone number</string>
     <string name="name">Name</string>
+    <string name="token">Token Authentication</string>
     
 </resources>
