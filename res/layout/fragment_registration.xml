@@ -111,6 +111,12 @@
 	        android:layout_height="wrap_content"
 	        android:layout_width="match_parent"
 	        android:text="@string/token" />
+	    
+	    <Button
+            android:id="@+id/inittoken"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="@string/inittoken" />
 	        
 	    <Button
 	        android:id="@+id/unregister"

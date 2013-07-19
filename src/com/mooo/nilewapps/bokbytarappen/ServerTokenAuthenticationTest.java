@@ -48,7 +48,7 @@ public class ServerTokenAuthenticationTest {
         public UnregisterTask(Context context) {
             this.context = context;
             Resources res = context.getResources();
-            url = res.getString(R.string.server_url) + res.getString(R.string.unregister_url);
+            url = res.getString(R.string.url_server) + res.getString(R.string.url_unregister);
             Log.i(this.toString(), "url: " + url);
         }
         

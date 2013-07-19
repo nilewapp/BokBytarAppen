@@ -15,8 +15,16 @@
  */
 package com.mooo.nilewapps.bokbytarappen;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
 import android.app.Activity;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,13 +85,20 @@ public class RegistrationFragment extends SherlockFragment
                 tokenAuthenticateUser();
             }
         });
-        
+
+        final Button initToken = (Button) view.findViewById(R.id.inittoken);
+        initToken.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initToken();
+            }
+        });        
         return layout;
         
     }
 
     public void onDialogItemClick(String university) {
-        Preferences.put(getActivity(), R.string.setting_university_key, university);
+        Preferences.put(getActivity(), R.string.key_university, university);
         updateUniversityTextView((TextView) getView().findViewById(R.id.setting_university_value));
     }
     
@@ -94,7 +109,7 @@ public class RegistrationFragment extends SherlockFragment
         university.setText(
                 Preferences.get(
                         activity,
-                        R.string.setting_university_key,
+                        R.string.key_university,
                         uninitialisedUniversityHelp));
     }
     
@@ -106,7 +121,7 @@ public class RegistrationFragment extends SherlockFragment
         String email      = getTextFromId(R.id.email);
         String name       = getTextFromId(R.id.name);
         String phone      = getTextFromId(R.id.phone);
-        String university = Preferences.get(getActivity(), R.string.setting_university_key);
+        String university = Preferences.get(getActivity(), R.string.key_university);
         String password   = getTextFromId(R.id.password);
         new Registry().register(getActivity(), email, name, phone, university, password);
     }
@@ -119,7 +134,24 @@ public class RegistrationFragment extends SherlockFragment
 
 
     private void tokenAuthenticateUser() {
-        String email = getTextFromId(R.id.email);
-        new ServerTokenAuthenticationTest().unregisterUser(getActivity(), email, "123", "456");
+        Resources res = getResources();
+        String url = res.getString(R.string.url_server) + res.getString(R.string.url_unregister);
+        List<NameValuePair> body = new ArrayList<NameValuePair>();
+        body.add(new BasicNameValuePair("name", "blubbi"));
+        PostRequest request = new PostRequest(this, url, body);
+        try {
+            PostRequest.PostRequestTask task = request.execute();
+            String response = task.get();
+            if (response == null) {
+                throw task.getException();
+            }
+            Log.i(this.toString(), response.toString());
+        } catch (Exception e) {
+            Log.e(this.toString(), "Uncaught exception", e);
+        }
+    }
+    
+    private void initToken() {
+        TokenManager.setToken(getActivity(), new AuthenticationToken("a", "1", "1", 0));
     }
 }

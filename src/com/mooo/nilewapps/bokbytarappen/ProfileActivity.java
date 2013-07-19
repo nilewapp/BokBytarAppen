@@ -43,8 +43,6 @@ public class ProfileActivity extends SherlockFragmentActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                // This is called when the Home (Up) button is pressed
-                // in the Action Bar.
                 Intent parentActivityIntent = new Intent(this, MainActivity.class);
                 parentActivityIntent.addFlags(
                         Intent.FLAG_ACTIVITY_CLEAR_TOP |

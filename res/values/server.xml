@@ -16,9 +16,9 @@
 -->
 <resources>
 
-    <string name="server_url">https://192.168.0.25:8443</string>
-    <string name="register_url">/register</string>
-    <string name="unregister_url">/unregister</string>
-    <string name="university_url">/universities</string>
+    <string name="url_server">https://192.168.0.25:8443</string>
+    <string name="url_register">/register</string>
+    <string name="url_unregister">/unregister</string>
+    <string name="url_university">/universities/</string>
 
 </resources>

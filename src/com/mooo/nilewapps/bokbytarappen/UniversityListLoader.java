@@ -24,7 +24,6 @@ import org.json.JSONArray;
 import android.content.Context;
 import android.content.res.Resources;
 import android.support.v4.content.AsyncTaskLoader;
-import android.util.Log;
 
 import com.mooo.nilewapps.androidnilewapp.HttpGetString;
 
@@ -48,8 +47,7 @@ public class UniversityListLoader extends AsyncTaskLoader<List<String>> {
         super(context);
         this.country = country;
         Resources res = context.getResources();
-        universityUrl = res.getString(R.string.server_url) + res.getString(R.string.university_url) + "/";
-        Log.d(this.toString(), "Init UniversityListLoader with universityUrl '" + universityUrl + "'");
+        universityUrl = res.getString(R.string.url_server) + res.getString(R.string.url_university);
     }
     
     @Override 

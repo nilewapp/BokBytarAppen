@@ -16,11 +16,12 @@
 -->
 <resources>
     
-    <string name="setting_university_key">university_key</string>
-    <string name="username_key">username_key</string>
-    <string name="profile_pic_filename">profile_pic_filename.png</string>
-    <string name="title_activity_profile">ProfileActivity</string>
-    <string name="profile_id_key">profile_id_key</string>
-    <string name="password_key">password_key</string>
-
+    <string name="key_university">key_university</string>
+    <string name="key_name">key_name</string>
+    <string name="key_profile">key_profile</string>
+    <string name="key_authentication_profile">key_authentication_profile</string>
+    <string name="key_authentication_series">key_authentication_series</string>
+    <string name="key_authentication_token">key_authentication_token</string>
+    <string name="key_authentication_expiration_time">key_authentication_expiration_time</string>
+    
 </resources>

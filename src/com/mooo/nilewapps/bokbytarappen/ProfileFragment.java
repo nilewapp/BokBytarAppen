@@ -69,19 +69,19 @@ public class ProfileFragment extends SherlockFragment
         university.setText(
                 Preferences.get(
                         activity,
-                        R.string.setting_university_key,
+                        R.string.key_university,
                         uninitialisedUniversityHelp));
     }
 
     private void storeUniversity(String item) {
-        Preferences.put(getActivity(), R.string.setting_university_key, item);
+        Preferences.put(getActivity(), R.string.key_university, item);
     }
     
     private void createProfileHeader(final View view) {
         final TextView tv = (TextView) view.findViewById(R.id.user_name);
         
         /* Show stored username */
-        tv.setText(Preferences.get(getActivity(), R.string.username_key, ""));
+        tv.setText(Preferences.get(getActivity(), R.string.key_name, ""));
     }
     
 }

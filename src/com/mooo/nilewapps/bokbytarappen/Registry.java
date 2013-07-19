@@ -27,6 +27,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.mooo.nilewapps.androidnilewapp.HttpPostString;
+import com.mooo.nilewapps.androidnilewapp.HttpException;
 
 /**
  * Registers a user with the server
@@ -50,7 +51,7 @@ public class Registry {
         public UnregisterTask(Context context) {
             this.context = context;
             Resources res = context.getResources();
-            url = res.getString(R.string.server_url) + res.getString(R.string.unregister_url);
+            url = res.getString(R.string.url_server) + res.getString(R.string.url_unregister);
         }
         
         @Override
@@ -88,7 +89,11 @@ public class Registry {
         public RegisterTask(Context context) {
             this.context = context;
             Resources res = context.getResources();
-            url = res.getString(R.string.server_url) + res.getString(R.string.register_url);
+            url = res.getString(R.string.url_server) + res.getString(R.string.url_register);
+        }
+        
+        public Exception getException() {
+            return e;
         }
         
         @Override
