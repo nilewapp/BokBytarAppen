@@ -27,7 +27,6 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.mooo.nilewapps.androidnilewapp.HttpPostString;
-import com.mooo.nilewapps.androidnilewapp.HttpException;
 
 /**
  * Registers a user with the server

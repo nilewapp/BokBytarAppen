@@ -18,7 +18,7 @@ package com.mooo.nilewapps.bokbytarappen;
 import java.security.KeyStore;
 import java.util.List;
 
-import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
 import com.mooo.nilewapps.androidnilewapp.HttpPostString;
@@ -49,7 +49,7 @@ public class PostRequest {
     
     private final Fragment fragment;
     private final String url;
-    private final List<NameValuePair> requestEntity;
+    private final List<BasicNameValuePair> requestEntity;
 
     private final String profile;
     private final String password;
@@ -60,7 +60,7 @@ public class PostRequest {
      * @param url service url
      * @param requestEntity request body
      */
-    public PostRequest(Fragment fragment, String url, List<NameValuePair> requestEntity) {
+    public PostRequest(Fragment fragment, String url, List<BasicNameValuePair> requestEntity) {
         this.fragment = fragment;
         this.url = url;
         this.requestEntity = requestEntity;
@@ -74,12 +74,12 @@ public class PostRequest {
      * @param url
      * @param profile
      * @param password
-     * @param requestEntity
+     * @param requestEntity2
      */
-    public PostRequest(Fragment fragment, String url, String profile, String password, List<NameValuePair> requestEntity) {
+    public PostRequest(Fragment fragment, String url, String profile, String password, List<BasicNameValuePair> requestEntity2) {
         this.fragment = fragment;
         this.url = url;
-        this.requestEntity = requestEntity;
+        this.requestEntity = requestEntity2;
         this.profile = profile;
         this.password = password;
     }

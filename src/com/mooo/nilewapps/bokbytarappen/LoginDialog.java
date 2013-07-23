@@ -15,23 +15,60 @@
  */
 package com.mooo.nilewapps.bokbytarappen;
 
+import java.util.List;
+
+import org.apache.http.message.BasicNameValuePair;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+
+import com.mooo.nilewapps.androidnilewapp.ParcelableRequestEntity;
+import com.mooo.nilewapps.bokbytarappen.PostRequest.PostRequestTask;
 
 public class LoginDialog extends DialogFragment {
     
+    public static final String URL = "url";
+    public static final String REQUEST_ENTITY = "request_entity";
+    
+    private String url;
+    private List<BasicNameValuePair> requestEntity;
+    
+    private LinearLayout layout;
+    
+    private LoginDialogListener listener;
+    
+    private void init(Bundle bundle) {
+        url = bundle.getString(URL);
+        requestEntity = ((ParcelableRequestEntity) bundle.getParcelable(REQUEST_ENTITY)).getEntity();
+    }
+    
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        
+        init(savedInstanceState);
+        
         final Activity activity = getActivity();
         final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         final LayoutInflater inflater = activity.getLayoutInflater();
-        final LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.dialog_login, null);
+        layout = (LinearLayout) inflater.inflate(R.layout.dialog_login, null);
+        
+        Button login = (Button) layout.findViewById(R.id.login);
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                login();
+            }
+        });
         
         final Dialog dialog = builder.create();
         
@@ -40,4 +77,49 @@ public class LoginDialog extends DialogFragment {
         
         return dialog;
     }
+    
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        /* Get target fragment and assert that it implements the listener */
+        final Fragment frag = getTargetFragment();
+        if (frag == null) {
+            throw new RuntimeException(this.toString() + " target fragment not set.");
+        }
+        try {
+            listener = (LoginDialogListener) frag;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(frag.toString()
+                    + " must implement " + LoginDialogListener.class.getName());
+        }
+    }
+    
+    private String getTextFromId(int id) {
+        return ((EditText) getView().findViewById(id)).getText().toString();
+    }
+    
+    private String login() {
+        String profile = getTextFromId(R.id.email);
+        String password = getTextFromId(R.id.password);
+        PostRequest request = new PostRequest(this.getTargetFragment(), url, profile, password, requestEntity);
+        PostRequestTask task = request.execute();
+        try {
+            String response = task.get();
+            if (response != null) {
+                listener.onLoginSuccessfull(response);
+            } else {
+                listener.onLoginFailed(task.getException());
+            }
+        } catch (Exception e) {
+            listener.onLoginFailed(e);
+        }
+        return null;
+    }
+    
+    public interface LoginDialogListener {
+        public void onLoginSuccessfull(String response);
+        public void onLoginFailed(Exception e);
+    }
+    
+    
 }

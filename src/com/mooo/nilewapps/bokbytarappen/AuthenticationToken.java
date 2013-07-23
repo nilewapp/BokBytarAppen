@@ -18,7 +18,6 @@ package com.mooo.nilewapps.bokbytarappen;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -58,8 +57,8 @@ public class AuthenticationToken {
         return sb.toString();
     }
     
-    public List<NameValuePair> getRequestEntity() {
-        List<NameValuePair> body = new ArrayList<NameValuePair>(3);
+    public List<BasicNameValuePair> getRequestEntity() {
+        List<BasicNameValuePair> body = new ArrayList<BasicNameValuePair>(3);
         body.add(new BasicNameValuePair(PROFILE, profile));
         body.add(new BasicNameValuePair(SERIES, series));
         body.add(new BasicNameValuePair(TOKEN, token));

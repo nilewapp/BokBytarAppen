@@ -18,7 +18,6 @@ package com.mooo.nilewapps.bokbytarappen;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import android.app.Activity;
@@ -136,7 +135,7 @@ public class RegistrationFragment extends SherlockFragment
     private void tokenAuthenticateUser() {
         Resources res = getResources();
         String url = res.getString(R.string.url_server) + res.getString(R.string.url_unregister);
-        List<NameValuePair> body = new ArrayList<NameValuePair>();
+        List<BasicNameValuePair> body = new ArrayList<BasicNameValuePair>();
         body.add(new BasicNameValuePair("name", "blubbi"));
         PostRequest request = new PostRequest(this, url, body);
         try {
