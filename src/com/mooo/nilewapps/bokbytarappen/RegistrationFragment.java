@@ -15,6 +15,7 @@
  */
 package com.mooo.nilewapps.bokbytarappen;
 
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,10 +36,12 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.mooo.nilewapps.androidnilewapp.FilterableListDialogFragment;
+import com.mooo.nilewapps.androidnilewapp.HttpException;
 import com.mooo.nilewapps.androidnilewapp.Preferences;
 
 public class RegistrationFragment extends SherlockFragment
-        implements FilterableListDialogFragment.FilterableListDialogListener {
+        implements FilterableListDialogFragment.FilterableListDialogListener,
+            LoginDialog.LoginDialogListener {
 
     @Override
     public View onCreateView(
@@ -131,20 +134,27 @@ public class RegistrationFragment extends SherlockFragment
         new Registry().unregister(getActivity(), email, password);
     }
 
-
     private void tokenAuthenticateUser() {
         Resources res = getResources();
         String url = res.getString(R.string.url_server) + res.getString(R.string.url_unregister);
         List<BasicNameValuePair> body = new ArrayList<BasicNameValuePair>();
+        /* Add AuthenticationToken to the request body */
+        body.addAll(TokenManager.getToken(getActivity()).getRequestEntity());
         body.add(new BasicNameValuePair("name", "blubbi"));
         PostRequest request = new PostRequest(this, url, body);
         try {
             PostRequest.PostRequestTask task = request.execute();
             String response = task.get();
-            if (response == null) {
-                throw task.getException();
+            HttpException e = task.getHttpException();
+            if (e != null && e.getResponse().getStatusLine().getStatusCode() == HttpURLConnection.HTTP_UNAUTHORIZED) {
+                Log.i(this.toString(), "Opening login dialog");
+                LoginDialog dialog = LoginDialog.newInstance(url, body);
+                dialog.setTargetFragment(this, 0);
+                dialog.show();
+                Log.i(this.toString(), "Login Dialog should be showing");
+            } else {
+                Log.i(this.toString(), response);
             }
-            Log.i(this.toString(), response.toString());
         } catch (Exception e) {
             Log.e(this.toString(), "Uncaught exception", e);
         }
@@ -152,5 +162,15 @@ public class RegistrationFragment extends SherlockFragment
     
     private void initToken() {
         TokenManager.setToken(getActivity(), new AuthenticationToken("a", "1", "1", 0));
+    }
+
+    @Override
+    public void onLoginSuccessful(String response) {
+        Log.i(this.toString(), response);
+    }
+
+    @Override
+    public void onLoginFailed(Exception e) {
+        Log.e(this.toString(), "Uncaught exception", e);
     }
 }

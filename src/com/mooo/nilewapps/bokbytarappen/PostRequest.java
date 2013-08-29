@@ -21,6 +21,7 @@ import java.util.List;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
+import com.mooo.nilewapps.androidnilewapp.HttpException;
 import com.mooo.nilewapps.androidnilewapp.HttpPostString;
 
 import android.os.AsyncTask;
@@ -96,7 +97,12 @@ public class PostRequest {
 
     class PostRequestTask extends AsyncTask<Void, Void, String> {
 
+        private HttpException httpEx = null;
         private Exception e = null;
+
+        public HttpException getHttpException() {
+            return httpEx;
+        }
 
         public Exception getException() {
             return e;
@@ -108,12 +114,6 @@ public class PostRequest {
                 /* Load trust store */
                 KeyStore trustStore = TrustManager.getKeyStore(fragment.getActivity());
                 
-                if (profile == null) {
-                    /* Add AuthenticationToken to the request body */
-                    requestEntity.addAll(TokenManager.getToken(fragment.getActivity()).getRequestEntity());
-                }
-
-                /* Perform HTTP request */
                 String response;
                 if (profile == null) {
                     response = HttpPostString.request(trustStore, url, requestEntity);
@@ -129,6 +129,9 @@ public class PostRequest {
 
                 /* Return rest of response */
                 return json.getString(MESSAGE);
+            } catch (HttpException e) {
+                this.httpEx = e;
+                return null;
             } catch (Exception e) {
                 this.e = e;
                 return null;

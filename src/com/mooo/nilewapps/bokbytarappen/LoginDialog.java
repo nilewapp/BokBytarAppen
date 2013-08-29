@@ -22,17 +22,20 @@ import org.apache.http.message.BasicNameValuePair;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.mooo.nilewapps.androidnilewapp.ParcelableRequestEntity;
+import com.mooo.nilewapps.androidnilewapp.R;
 import com.mooo.nilewapps.bokbytarappen.PostRequest.PostRequestTask;
 
 public class LoginDialog extends DialogFragment {
@@ -47,16 +50,21 @@ public class LoginDialog extends DialogFragment {
     
     private LoginDialogListener listener;
     
-    private void init(Bundle bundle) {
-        url = bundle.getString(URL);
-        requestEntity = ((ParcelableRequestEntity) bundle.getParcelable(REQUEST_ENTITY)).getEntity();
+    public static LoginDialog newInstance(String url, List<BasicNameValuePair> requestEntity) {
+        LoginDialog d = new LoginDialog();
+        Bundle args = new Bundle();
+        args.putString(URL, url);
+        args.putParcelable(REQUEST_ENTITY, new ParcelableRequestEntity(requestEntity));
+        d.setArguments(args);
+        return d;
     }
     
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         
-        init(savedInstanceState);
-        
+        url = getArguments().getString(URL);
+        requestEntity = ((ParcelableRequestEntity) getArguments().getParcelable(REQUEST_ENTITY)).getEntity();
+    
         final Activity activity = getActivity();
         final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         final LayoutInflater inflater = activity.getLayoutInflater();
@@ -106,7 +114,7 @@ public class LoginDialog extends DialogFragment {
         try {
             String response = task.get();
             if (response != null) {
-                listener.onLoginSuccessfull(response);
+                listener.onLoginSuccessful(response);
             } else {
                 listener.onLoginFailed(task.getException());
             }
@@ -116,8 +124,12 @@ public class LoginDialog extends DialogFragment {
         return null;
     }
     
+    public void show() {
+        show(getTargetFragment().getFragmentManager(), "login_dialog");
+    }
+    
     public interface LoginDialogListener {
-        public void onLoginSuccessfull(String response);
+        public void onLoginSuccessful(String response);
         public void onLoginFailed(Exception e);
     }
     
