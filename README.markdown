@@ -6,7 +6,6 @@ buy, sell and share student literature.
 ### Dependencies
 
 * [AndroidNilewapp](http://github.com/nilewapp/AndroidNilewapp)
-* [ActionBarSherlock](http://actionbarsherlock.com)
 
 ### Using the app
 
