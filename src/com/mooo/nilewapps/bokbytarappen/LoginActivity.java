@@ -16,22 +16,21 @@
 package com.mooo.nilewapps.bokbytarappen;
 
 import android.os.Bundle;
+import android.app.Activity;
 import android.content.Intent;
-
-import com.actionbarsherlock.app.SherlockActivity;
 
 /**
  * Handles login to Facebook and registration with the server
  * @author nilewapp
  *
  */
-public class LoginActivity extends SherlockActivity {
+public class LoginActivity extends Activity {
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        getSupportActionBar().hide();
+        getActionBar().hide();
 
         setContentView(R.layout.dialog_login);
 

@@ -19,7 +19,7 @@
 
     <string name="logo_description">App logotyp</string>
     <string name="action_settings">Inställningar</string>
-    <string name="login">Logga in med Facebook...</string>
+    <string name="login">Logga in</string>
     <string name="logout">Logga ut</string>
     
     <string name="profile">Profil</string>

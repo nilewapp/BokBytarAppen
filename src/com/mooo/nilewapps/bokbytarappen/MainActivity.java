@@ -15,22 +15,20 @@
  */
 package com.mooo.nilewapps.bokbytarappen;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.MenuItem.OnMenuItemClickListener;
-
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class MainActivity extends SherlockFragmentActivity {
+public class MainActivity extends FragmentActivity {
     
     private String[] drawerItems = {"First", "Second", "Third", "Fourth"};
     private ListView drawerList;
@@ -72,7 +70,7 @@ public class MainActivity extends SherlockFragmentActivity {
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getSupportMenuInflater().inflate(R.menu.global, menu);
+        getMenuInflater().inflate(R.menu.global, menu);
         final Resources res = getResources();
         
         menu.add(res.getString(R.string.search))
@@ -83,7 +81,7 @@ public class MainActivity extends SherlockFragmentActivity {
         
         menu.add(res.getString(R.string.profile))
             .setIcon(profileIcon)
-            .setOnMenuItemClickListener(new OnMenuItemClickListener() {
+            .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
                     /* Switch to the profile activity */

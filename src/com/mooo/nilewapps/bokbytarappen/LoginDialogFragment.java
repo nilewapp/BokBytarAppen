@@ -15,6 +15,7 @@
  */
 package com.mooo.nilewapps.bokbytarappen;
 
+import java.security.KeyStore;
 import java.util.List;
 
 import org.apache.http.message.BasicNameValuePair;
@@ -22,36 +23,35 @@ import org.apache.http.message.BasicNameValuePair;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.mooo.nilewapps.androidnilewapp.ParcelableRequestEntity;
-import com.mooo.nilewapps.androidnilewapp.R;
-import com.mooo.nilewapps.bokbytarappen.PostRequest.PostRequestTask;
+import com.mooo.nilewapps.bokbytarappen.PostRequest.PostRequestListener;
 
-public class LoginDialog extends DialogFragment {
+public class LoginDialogFragment extends DialogFragment {
     
     public static final String URL = "url";
     public static final String REQUEST_ENTITY = "request_entity";
+    public static final String REQUEST_LISTENER = "request_listener";
     
     private String url;
     private List<BasicNameValuePair> requestEntity;
     
     private LinearLayout layout;
     
-    private LoginDialogListener listener;
+    private PostRequestListener listener;
     
-    public static LoginDialog newInstance(String url, List<BasicNameValuePair> requestEntity) {
-        LoginDialog d = new LoginDialog();
+    public static LoginDialogFragment newInstance(PostRequestListener listener, String url, List<BasicNameValuePair> requestEntity) {
+        LoginDialogFragment d = new LoginDialogFragment();
+        d.listener = listener;
         Bundle args = new Bundle();
         args.putString(URL, url);
         args.putParcelable(REQUEST_ENTITY, new ParcelableRequestEntity(requestEntity));
@@ -78,7 +78,7 @@ public class LoginDialog extends DialogFragment {
             }
         });
         
-        final Dialog dialog = builder.create();
+        final Dialog dialog = builder.setView(layout).create();
         
         /* Make the dialog resize when the soft keyboard is open */
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
@@ -86,52 +86,24 @@ public class LoginDialog extends DialogFragment {
         return dialog;
     }
     
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        /* Get target fragment and assert that it implements the listener */
-        final Fragment frag = getTargetFragment();
-        if (frag == null) {
-            throw new RuntimeException(this.toString() + " target fragment not set.");
-        }
-        try {
-            listener = (LoginDialogListener) frag;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(frag.toString()
-                    + " must implement " + LoginDialogListener.class.getName());
-        }
-    }
-    
     private String getTextFromId(int id) {
-        return ((EditText) getView().findViewById(id)).getText().toString();
+        return ((EditText) layout.findViewById(id)).getText().toString();
     }
     
-    private String login() {
+    private void login() {
         String profile = getTextFromId(R.id.email);
         String password = getTextFromId(R.id.password);
-        PostRequest request = new PostRequest(this.getTargetFragment(), url, profile, password, requestEntity);
-        PostRequestTask task = request.execute();
+        KeyStore trustStore = null;
         try {
-            String response = task.get();
-            if (response != null) {
-                listener.onLoginSuccessful(response);
-            } else {
-                listener.onLoginFailed(task.getException());
-            }
+            trustStore = TrustManager.getKeyStore(getActivity());
         } catch (Exception e) {
-            listener.onLoginFailed(e);
+            Log.e(this.toString(), "Failed to load trust store in LoginDialogFragment.login", e);
         }
-        return null;
+        PostRequest request = new PostRequest(listener, trustStore, url, profile, password, requestEntity);
+        request.execute();
     }
     
     public void show() {
         show(getTargetFragment().getFragmentManager(), "login_dialog");
     }
-    
-    public interface LoginDialogListener {
-        public void onLoginSuccessful(String response);
-        public void onLoginFailed(Exception e);
-    }
-    
-    
 }

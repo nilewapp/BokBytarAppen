@@ -15,8 +15,26 @@
  */
 package com.mooo.nilewapps.bokbytarappen;
 
-import android.support.v4.app.Fragment;
+/**
+ * Represents the response from the server
+ * @author nilewapp
+ *
+ */
+public class SessMess {
+    
+    private final AuthenticationToken token;
+    private final String message;
+    
+    public SessMess(AuthenticationToken token, String message) {
+        this.token = token;
+        this.message = message;
+    }
 
-public class WantFragment extends Fragment {
+    public AuthenticationToken getToken() {
+        return token;
+    }
 
+    public String getMessage() {
+        return message;
+    }
 }

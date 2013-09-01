@@ -17,6 +17,7 @@ package com.mooo.nilewapps.bokbytarappen;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,9 +27,7 @@ import android.widget.TextView;
 import com.mooo.nilewapps.androidnilewapp.FilterableListDialogFragment;
 import com.mooo.nilewapps.androidnilewapp.Preferences;
 
-import com.actionbarsherlock.app.SherlockFragment;
-
-public class ProfileFragment extends SherlockFragment
+public class ProfileFragment extends Fragment
         implements FilterableListDialogFragment.FilterableListDialogListener {
 
     @Override

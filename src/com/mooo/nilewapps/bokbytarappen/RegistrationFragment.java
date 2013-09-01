@@ -15,7 +15,6 @@
  */
 package com.mooo.nilewapps.bokbytarappen;
 
-import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +23,7 @@ import org.apache.http.message.BasicNameValuePair;
 import android.app.Activity;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,14 +34,13 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockFragment;
 import com.mooo.nilewapps.androidnilewapp.FilterableListDialogFragment;
 import com.mooo.nilewapps.androidnilewapp.HttpException;
 import com.mooo.nilewapps.androidnilewapp.Preferences;
+import com.mooo.nilewapps.bokbytarappen.PostRequest.PostRequestListener;
 
-public class RegistrationFragment extends SherlockFragment
-        implements FilterableListDialogFragment.FilterableListDialogListener,
-            LoginDialog.LoginDialogListener {
+public class RegistrationFragment extends Fragment
+        implements FilterableListDialogFragment.FilterableListDialogListener {
 
     @Override
     public View onCreateView(
@@ -134,6 +133,8 @@ public class RegistrationFragment extends SherlockFragment
         new Registry().unregister(getActivity(), email, password);
     }
 
+    
+    
     private void tokenAuthenticateUser() {
         Resources res = getResources();
         String url = res.getString(R.string.url_server) + res.getString(R.string.url_unregister);
@@ -141,22 +142,11 @@ public class RegistrationFragment extends SherlockFragment
         /* Add AuthenticationToken to the request body */
         body.addAll(TokenManager.getToken(getActivity()).getRequestEntity());
         body.add(new BasicNameValuePair("name", "blubbi"));
-        PostRequest request = new PostRequest(this, url, body);
         try {
-            PostRequest.PostRequestTask task = request.execute();
-            String response = task.get();
-            HttpException e = task.getHttpException();
-            if (e != null && e.getResponse().getStatusLine().getStatusCode() == HttpURLConnection.HTTP_UNAUTHORIZED) {
-                Log.i(this.toString(), "Opening login dialog");
-                LoginDialog dialog = LoginDialog.newInstance(url, body);
-                dialog.setTargetFragment(this, 0);
-                dialog.show();
-                Log.i(this.toString(), "Login Dialog should be showing");
-            } else {
-                Log.i(this.toString(), response);
-            }
+            LoginPostRequest request = new LoginPostRequest(this, postRequestListener, TrustManager.getKeyStore(getActivity()), url, body);
+            request.execute();
         } catch (Exception e) {
-            Log.e(this.toString(), "Uncaught exception", e);
+            Log.e(this.toString(), "Uncaught exception in RegistrationFragment.tokenAuthenticateUser", e);
         }
     }
     
@@ -164,13 +154,19 @@ public class RegistrationFragment extends SherlockFragment
         TokenManager.setToken(getActivity(), new AuthenticationToken("a", "1", "1", 0));
     }
 
-    @Override
-    public void onLoginSuccessful(String response) {
-        Log.i(this.toString(), response);
-    }
+    
+    private PostRequestListener postRequestListener = new PostRequestListener() {
 
-    @Override
-    public void onLoginFailed(Exception e) {
-        Log.e(this.toString(), "Uncaught exception", e);
-    }
+        @Override
+        public void onSuccess(SessMess response) {
+            TokenManager.setToken(getActivity(), response.getToken());
+            Log.i(this.toString(), response.getMessage());
+        }
+
+        @Override
+        public void onFailure(HttpException e) {
+            Log.w(this.toString(), "Failed to login", e);
+        }
+        
+    };
 }

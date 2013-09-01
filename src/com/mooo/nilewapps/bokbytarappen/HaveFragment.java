@@ -16,14 +16,13 @@
 package com.mooo.nilewapps.bokbytarappen;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.actionbarsherlock.app.SherlockFragment;
-
-public class HaveFragment extends SherlockFragment {
+public class HaveFragment extends Fragment {
     
     @Override
     public View onCreateView(
