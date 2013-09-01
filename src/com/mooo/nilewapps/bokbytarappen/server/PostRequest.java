@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mooo.nilewapps.bokbytarappen;
+package com.mooo.nilewapps.bokbytarappen.server;
 
 import java.security.KeyStore;
 import java.util.List;
@@ -51,6 +51,7 @@ public class PostRequest {
     
     private final String url;
     private final List<BasicNameValuePair> requestEntity;
+    private final NilewappAuthHeader authorizationHeader;
 
     private final String profile;
     private final String password;
@@ -65,10 +66,11 @@ public class PostRequest {
      * @param url service url
      * @param requestEntity request body
      */
-    public PostRequest(PostRequestListener listener, KeyStore trustStore, String url, List<BasicNameValuePair> requestEntity) {
+    public PostRequest(PostRequestListener listener, KeyStore trustStore, String url, NilewappAuthHeader authorizationHeader, List<BasicNameValuePair> requestEntity) {
         this.listener = listener;
         this.url = url;
         this.requestEntity = requestEntity;
+        this.authorizationHeader = authorizationHeader;
         this.profile = null;
         this.password = null;
         this.trustStore = trustStore;
@@ -86,6 +88,7 @@ public class PostRequest {
         this.listener = listener;
         this.url = url;
         this.requestEntity = requestEntity;
+        this.authorizationHeader = null;
         this.profile = profile;
         this.password = password;
         this.trustStore = trustStore;
@@ -111,8 +114,8 @@ public class PostRequest {
         @Override
         protected SessMess doInBackground(Void...voids) {
             try {
-                if (profile == null) {
-                    return toSessMess(HttpPostString.request(trustStore, url, requestEntity));
+                if (authorizationHeader != null) {
+                    return toSessMess(HttpPostString.request(trustStore, url, authorizationHeader, requestEntity));
                 } else {
                     return toSessMess(HttpPostString.request(trustStore, url, profile, password, requestEntity));
                 }

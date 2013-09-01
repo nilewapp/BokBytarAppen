@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mooo.nilewapps.bokbytarappen;
+package com.mooo.nilewapps.bokbytarappen.server;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +21,8 @@ import java.util.List;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import android.util.Base64;
 
 public class AuthenticationToken {
     
@@ -48,14 +50,19 @@ public class AuthenticationToken {
         this.expirationTime = expirationTime;
     }
     
+    private String encode(String s) {
+        return Base64.encodeToString(s.getBytes(), Base64.URL_SAFE|Base64.NO_WRAP);
+    }
+    
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(PROFILE).append("=").append(profile).append("&");
-        sb.append(SERIES).append("=").append(series).append("&");
-        sb.append(TOKEN).append("=").append(token);
+        sb.append(PROFILE).append("=\"").append(encode(profile)).append("\",");
+        sb.append(SERIES).append("=\"").append(encode(series)).append("\",");
+        sb.append(TOKEN).append("=\"").append(encode(token)).append("\"");
         return sb.toString();
     }
+    
     
     public List<BasicNameValuePair> getRequestEntity() {
         List<BasicNameValuePair> body = new ArrayList<BasicNameValuePair>(3);

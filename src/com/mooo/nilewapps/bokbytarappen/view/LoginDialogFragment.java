@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mooo.nilewapps.bokbytarappen;
+package com.mooo.nilewapps.bokbytarappen.view;
 
 import java.security.KeyStore;
 import java.util.List;
@@ -34,13 +34,15 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.mooo.nilewapps.androidnilewapp.ParcelableRequestEntity;
-import com.mooo.nilewapps.bokbytarappen.PostRequest.PostRequestListener;
+import com.mooo.nilewapps.bokbytarappen.R;
+import com.mooo.nilewapps.bokbytarappen.TrustManager;
+import com.mooo.nilewapps.bokbytarappen.server.PostRequest;
+import com.mooo.nilewapps.bokbytarappen.server.PostRequest.PostRequestListener;
 
 public class LoginDialogFragment extends DialogFragment {
     
     public static final String URL = "url";
     public static final String REQUEST_ENTITY = "request_entity";
-    public static final String REQUEST_LISTENER = "request_listener";
     
     private String url;
     private List<BasicNameValuePair> requestEntity;

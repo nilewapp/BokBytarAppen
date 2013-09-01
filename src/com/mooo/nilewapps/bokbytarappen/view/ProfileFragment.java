@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mooo.nilewapps.bokbytarappen;
+package com.mooo.nilewapps.bokbytarappen.view;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import com.mooo.nilewapps.androidnilewapp.FilterableListDialogFragment;
 import com.mooo.nilewapps.androidnilewapp.Preferences;
+import com.mooo.nilewapps.bokbytarappen.R;
 
 public class ProfileFragment extends Fragment
         implements FilterableListDialogFragment.FilterableListDialogListener {
@@ -44,7 +45,7 @@ public class ProfileFragment extends Fragment
         university.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UniversityListDialog dialog = new UniversityListDialog();
+                UniversityListDialogFragment dialog = new UniversityListDialogFragment();
                 dialog.setTargetFragment(ProfileFragment.this, 0);
                 dialog.show();
             }

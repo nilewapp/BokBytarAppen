@@ -13,28 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mooo.nilewapps.bokbytarappen;
+package com.mooo.nilewapps.bokbytarappen.server;
+
+import com.mooo.nilewapps.androidnilewapp.AuthorizationHeader;
 
 /**
- * Represents the response from the server
+ * Specialisation of the AuthorizationHeader that conforms to
+ * the Nilewapp authorization scheme. 
  * @author nilewapp
  *
  */
-public class SessMess {
+public class NilewappAuthHeader extends AuthorizationHeader {
     
-    private final AuthenticationToken token;
-    private final String message;
+    public static final String SCHEME = "Nilewapp";
     
-    public SessMess(AuthenticationToken token, String message) {
-        this.token = token;
-        this.message = message;
-    }
-
-    public AuthenticationToken getToken() {
-        return token;
-    }
-
-    public String getMessage() {
-        return message;
+    public NilewappAuthHeader(AuthenticationToken token) {
+        super(SCHEME, token.toString());
     }
 }

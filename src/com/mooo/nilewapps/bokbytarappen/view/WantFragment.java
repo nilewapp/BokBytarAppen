@@ -13,26 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mooo.nilewapps.bokbytarappen;
+package com.mooo.nilewapps.bokbytarappen.view;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
-public class HaveFragment extends Fragment {
-    
-    @Override
-    public View onCreateView(
-            LayoutInflater inflater, 
-            ViewGroup container, 
-            Bundle savedInstanceState) {
-        
-        final LinearLayout view = (LinearLayout) inflater.inflate(R.layout.fragment_have, null, false);
-        
-        return view;
-        
-    }
+public class WantFragment extends Fragment {
+
 }

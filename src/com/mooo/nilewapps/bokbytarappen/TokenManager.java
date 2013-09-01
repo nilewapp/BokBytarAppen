@@ -18,6 +18,7 @@ package com.mooo.nilewapps.bokbytarappen;
 import android.app.Activity;
 
 import com.mooo.nilewapps.androidnilewapp.Preferences;
+import com.mooo.nilewapps.bokbytarappen.server.AuthenticationToken;
 
 /**
  * Stores and extracts an AuthenticationToken on the device.

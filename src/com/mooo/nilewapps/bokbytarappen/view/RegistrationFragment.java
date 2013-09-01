@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mooo.nilewapps.bokbytarappen;
+package com.mooo.nilewapps.bokbytarappen.view;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +37,15 @@ import android.widget.TextView;
 import com.mooo.nilewapps.androidnilewapp.FilterableListDialogFragment;
 import com.mooo.nilewapps.androidnilewapp.HttpException;
 import com.mooo.nilewapps.androidnilewapp.Preferences;
-import com.mooo.nilewapps.bokbytarappen.PostRequest.PostRequestListener;
+import com.mooo.nilewapps.bokbytarappen.R;
+import com.mooo.nilewapps.bokbytarappen.Registry;
+import com.mooo.nilewapps.bokbytarappen.TokenManager;
+import com.mooo.nilewapps.bokbytarappen.TrustManager;
+import com.mooo.nilewapps.bokbytarappen.server.AuthenticationToken;
+import com.mooo.nilewapps.bokbytarappen.server.LoginPostRequest;
+import com.mooo.nilewapps.bokbytarappen.server.NilewappAuthHeader;
+import com.mooo.nilewapps.bokbytarappen.server.SessMess;
+import com.mooo.nilewapps.bokbytarappen.server.PostRequest.PostRequestListener;
 
 public class RegistrationFragment extends Fragment
         implements FilterableListDialogFragment.FilterableListDialogListener {
@@ -55,7 +63,7 @@ public class RegistrationFragment extends Fragment
         university.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UniversityListDialog dialog = new UniversityListDialog();
+                UniversityListDialogFragment dialog = new UniversityListDialogFragment();
                 dialog.setTargetFragment(RegistrationFragment.this, 0);
                 dialog.show();
             }
@@ -132,18 +140,15 @@ public class RegistrationFragment extends Fragment
         String password = getTextFromId(R.id.password);
         new Registry().unregister(getActivity(), email, password);
     }
-
-    
     
     private void tokenAuthenticateUser() {
         Resources res = getResources();
         String url = res.getString(R.string.url_server) + res.getString(R.string.url_unregister);
+        NilewappAuthHeader authorizationHeader = new NilewappAuthHeader(TokenManager.getToken(getActivity()));
         List<BasicNameValuePair> body = new ArrayList<BasicNameValuePair>();
-        /* Add AuthenticationToken to the request body */
-        body.addAll(TokenManager.getToken(getActivity()).getRequestEntity());
         body.add(new BasicNameValuePair("name", "blubbi"));
         try {
-            LoginPostRequest request = new LoginPostRequest(this, postRequestListener, TrustManager.getKeyStore(getActivity()), url, body);
+            LoginPostRequest request = new LoginPostRequest(this, postRequestListener, TrustManager.getKeyStore(getActivity()), url, authorizationHeader, body);
             request.execute();
         } catch (Exception e) {
             Log.e(this.toString(), "Uncaught exception in RegistrationFragment.tokenAuthenticateUser", e);
@@ -154,7 +159,6 @@ public class RegistrationFragment extends Fragment
         TokenManager.setToken(getActivity(), new AuthenticationToken("a", "1", "1", 0));
     }
 
-    
     private PostRequestListener postRequestListener = new PostRequestListener() {
 
         @Override
@@ -167,6 +171,5 @@ public class RegistrationFragment extends Fragment
         public void onFailure(HttpException e) {
             Log.w(this.toString(), "Failed to login", e);
         }
-        
     };
 }

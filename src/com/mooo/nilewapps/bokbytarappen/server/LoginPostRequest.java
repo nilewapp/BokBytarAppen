@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mooo.nilewapps.bokbytarappen;
+package com.mooo.nilewapps.bokbytarappen.server;
 
 import java.net.HttpURLConnection;
 import java.security.KeyStore;
@@ -24,7 +24,8 @@ import org.apache.http.message.BasicNameValuePair;
 import android.support.v4.app.Fragment;
 
 import com.mooo.nilewapps.androidnilewapp.HttpException;
-import com.mooo.nilewapps.bokbytarappen.PostRequest.PostRequestListener;
+import com.mooo.nilewapps.bokbytarappen.server.PostRequest.PostRequestListener;
+import com.mooo.nilewapps.bokbytarappen.view.LoginDialogFragment;
 
 /**
  * Creates an easy way of making post requests by first trying to
@@ -41,12 +42,12 @@ public class LoginPostRequest {
     private final Fragment targetFragment;
     private final PostRequest postRequest;
     
-    public LoginPostRequest(Fragment targetFragment, PostRequestListener listener, KeyStore trustStore, String url, List<BasicNameValuePair> body) {
+    public LoginPostRequest(Fragment targetFragment, PostRequestListener listener, KeyStore trustStore, String url, NilewappAuthHeader authorizationHeader, List<BasicNameValuePair> body) {
         this.listener = listener;
         this.url = url;
         this.body = body;
         this.targetFragment = targetFragment;
-        postRequest = new PostRequest(tokenPostRequestListener, trustStore, url, body);
+        postRequest = new PostRequest(tokenPostRequestListener, trustStore, url, authorizationHeader, body);
     }
     
     public void execute() {

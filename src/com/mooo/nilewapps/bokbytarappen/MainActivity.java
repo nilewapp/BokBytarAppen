@@ -15,6 +15,8 @@
  */
 package com.mooo.nilewapps.bokbytarappen;
 
+import com.mooo.nilewapps.bokbytarappen.view.RegistrationFragment;
+
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;

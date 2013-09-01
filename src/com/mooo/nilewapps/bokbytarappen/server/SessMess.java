@@ -13,10 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mooo.nilewapps.bokbytarappen;
+package com.mooo.nilewapps.bokbytarappen.server;
 
-import android.support.v4.app.Fragment;
+/**
+ * Represents the response from the server in the form 
+ * of a session variable and a response message.
+ * @author nilewapp
+ *
+ */
+public class SessMess {
+    
+    private final AuthenticationToken token;
+    private final String message;
+    
+    public SessMess(AuthenticationToken token, String message) {
+        this.token = token;
+        this.message = message;
+    }
 
-public class WantFragment extends Fragment {
+    public AuthenticationToken getToken() {
+        return token;
+    }
 
+    public String getMessage() {
+        return message;
+    }
 }

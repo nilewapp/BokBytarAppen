@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mooo.nilewapps.bokbytarappen;
+package com.mooo.nilewapps.bokbytarappen.view;
 
 import java.util.List;
 
@@ -24,8 +24,10 @@ import android.widget.Toast;
 import android.app.Dialog;
 
 import com.mooo.nilewapps.androidnilewapp.FilterableListDialogFragment;
+import com.mooo.nilewapps.bokbytarappen.R;
+import com.mooo.nilewapps.bokbytarappen.UniversityListLoader;
 
-public class UniversityListDialog extends FilterableListDialogFragment
+public class UniversityListDialogFragment extends FilterableListDialogFragment
         implements LoaderManager.LoaderCallbacks<List<String>> 
 {
     
