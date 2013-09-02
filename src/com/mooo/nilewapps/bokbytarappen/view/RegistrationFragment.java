@@ -144,7 +144,8 @@ public class RegistrationFragment extends Fragment
     private void tokenAuthenticateUser() {
         Resources res = getResources();
         String url = res.getString(R.string.url_server) + res.getString(R.string.url_unregister);
-        NilewappAuthHeader authorizationHeader = new NilewappAuthHeader(TokenManager.getToken(getActivity()));
+        AuthenticationToken token = TokenManager.getToken(getActivity());
+        NilewappAuthHeader authorizationHeader = token != null ? new NilewappAuthHeader(token) : null;
         List<BasicNameValuePair> body = new ArrayList<BasicNameValuePair>();
         body.add(new BasicNameValuePair("name", "blubbi"));
         try {

@@ -42,16 +42,27 @@ public class LoginPostRequest {
     private final Fragment targetFragment;
     private final PostRequest postRequest;
     
-    public LoginPostRequest(Fragment targetFragment, PostRequestListener listener, KeyStore trustStore, String url, NilewappAuthHeader authorizationHeader, List<BasicNameValuePair> body) {
+    public LoginPostRequest(
+            Fragment targetFragment,
+            PostRequestListener listener,
+            KeyStore trustStore,
+            String url,
+            NilewappAuthHeader authorizationHeader,
+            List<BasicNameValuePair> body) {
         this.listener = listener;
         this.url = url;
         this.body = body;
         this.targetFragment = targetFragment;
-        postRequest = new PostRequest(tokenPostRequestListener, trustStore, url, authorizationHeader, body);
+        postRequest = authorizationHeader != null ? 
+                new PostRequest(tokenPostRequestListener, trustStore, url, authorizationHeader, body) : null;
     }
     
     public void execute() {
-        postRequest.execute();
+        if (postRequest != null) {
+            postRequest.execute();
+        } else {
+            openLoginDialog();
+        }
     }
     
     private PostRequestListener loginDialogPostRequestListener = new PostRequestListener() {
@@ -78,13 +89,16 @@ public class LoginPostRequest {
         @Override
         public void onFailure(HttpException e) {
             if (e.getResponse().getStatusLine().getStatusCode() == HttpURLConnection.HTTP_UNAUTHORIZED) {
-                LoginDialogFragment dialog = LoginDialogFragment.newInstance(loginDialogPostRequestListener, url, body);
-                dialog.setTargetFragment(targetFragment, 0);
-                dialog.show();
+                openLoginDialog();
             } else {
                 listener.onFailure(e);
             }
         }
-        
     };
+    
+    private void openLoginDialog() {
+        LoginDialogFragment dialog = LoginDialogFragment.newInstance(loginDialogPostRequestListener, url, body);
+        dialog.setTargetFragment(targetFragment, 0);
+        dialog.show(); 
+    }
 }

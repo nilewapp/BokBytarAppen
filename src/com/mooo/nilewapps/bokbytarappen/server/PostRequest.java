@@ -116,8 +116,10 @@ public class PostRequest {
             try {
                 if (authorizationHeader != null) {
                     return toSessMess(HttpPostString.request(trustStore, url, authorizationHeader, requestEntity));
-                } else {
+                } else if (profile != null && password != null) {
                     return toSessMess(HttpPostString.request(trustStore, url, profile, password, requestEntity));
+                } else {
+                    return null;
                 }
             } catch (HttpException e) {
                 listener.onFailure(e);

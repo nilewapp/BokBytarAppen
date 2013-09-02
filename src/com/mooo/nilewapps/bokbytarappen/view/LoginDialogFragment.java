@@ -39,6 +39,11 @@ import com.mooo.nilewapps.bokbytarappen.TrustManager;
 import com.mooo.nilewapps.bokbytarappen.server.PostRequest;
 import com.mooo.nilewapps.bokbytarappen.server.PostRequest.PostRequestListener;
 
+/**
+ * Fragment defining a login dialog, performs an HTTP post request.
+ * @author nilewapp
+ *
+ */
 public class LoginDialogFragment extends DialogFragment {
     
     public static final String URL = "url";

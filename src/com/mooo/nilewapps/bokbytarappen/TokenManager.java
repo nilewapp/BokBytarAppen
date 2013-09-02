@@ -27,13 +27,23 @@ import com.mooo.nilewapps.bokbytarappen.server.AuthenticationToken;
  */
 public class TokenManager {
 
+    /**
+     * Returns the AuthenticationToken provided that all of the fields
+     * are stored in the preferences, null otherwise. 
+     * @param activity
+     * @return
+     */
     public static AuthenticationToken getToken(Activity activity) {
         String user = Preferences.get(activity, R.string.key_authentication_profile);
         String series = Preferences.get(activity, R.string.key_authentication_series);
         String token = Preferences.get(activity, R.string.key_authentication_token);
         String expiration = Preferences.get(activity, R.string.key_authentication_expiration_time, "-1");
         long expirationTime = Long.parseLong(expiration);
-        return new AuthenticationToken(user, series, token, expirationTime);
+        if (user != null && series != null && token != null) {
+            return new AuthenticationToken(user, series, token, expirationTime);
+        } else {
+            return null;
+        }
     }
     
     public static void setToken(Activity activity, AuthenticationToken token) {
