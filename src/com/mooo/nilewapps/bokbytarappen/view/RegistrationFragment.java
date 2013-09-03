@@ -166,6 +166,7 @@ public class RegistrationFragment extends Fragment
         @Override
         public void onSuccess(SessMess response) {
             TokenManager.setToken(getActivity(), response.getToken());
+            Preferences.put(getActivity(), R.string.key_authentication_email, response.getToken().getProfile());
             Log.i(RegistrationFragment.class.getName(), response.getMessage());
         }
 

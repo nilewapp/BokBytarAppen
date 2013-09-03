@@ -19,8 +19,8 @@
 
     <string name="logo_description">App logotyp</string>
     <string name="action_settings">Inställningar</string>
-    <string name="login">Logga in</string>
-    <string name="logout">Logga ut</string>
+    <string name="signin">Logga in</string>
+    <string name="signout">Logga ut</string>
     
     <string name="profile">Profil</string>
     <string name="want">Behöver</string>

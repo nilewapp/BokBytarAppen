@@ -34,7 +34,7 @@ public class TokenManager {
      * @return
      */
     public static AuthenticationToken getToken(Activity activity) {
-        String user = Preferences.get(activity, R.string.key_authentication_profile);
+        String user = Preferences.get(activity, R.string.key_authentication_email);
         String series = Preferences.get(activity, R.string.key_authentication_series);
         String token = Preferences.get(activity, R.string.key_authentication_token);
         String expiration = Preferences.get(activity, R.string.key_authentication_expiration_time, "-1");
@@ -47,7 +47,7 @@ public class TokenManager {
     }
     
     public static void setToken(Activity activity, AuthenticationToken token) {
-        Preferences.put(activity, R.string.key_authentication_profile, token.getProfile());
+        Preferences.put(activity, R.string.key_authentication_email, token.getProfile());
         Preferences.put(activity, R.string.key_authentication_series, token.getSeries());
         Preferences.put(activity, R.string.key_authentication_token, token.getToken());
         Preferences.put(activity, R.string.key_authentication_expiration_time, token.getExpirationTime().toString());

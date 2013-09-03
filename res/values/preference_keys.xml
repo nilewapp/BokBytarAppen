@@ -18,8 +18,7 @@
     
     <string name="key_university">key_university</string>
     <string name="key_name">key_name</string>
-    <string name="key_profile">key_profile</string>
-    <string name="key_authentication_profile">key_authentication_profile</string>
+    <string name="key_authentication_email">key_authentication_email</string>
     <string name="key_authentication_series">key_authentication_series</string>
     <string name="key_authentication_token">key_authentication_token</string>
     <string name="key_authentication_expiration_time">key_authentication_expiration_time</string>
