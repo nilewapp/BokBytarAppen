@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
 
 import android.app.Activity;
 import android.content.res.Resources;
@@ -165,12 +166,22 @@ public class RegistrationFragment extends Fragment
         @Override
         public void onSuccess(SessMess response) {
             TokenManager.setToken(getActivity(), response.getToken());
-            Log.i(this.toString(), response.getMessage());
+            Log.i(RegistrationFragment.class.getName(), response.getMessage());
         }
 
         @Override
-        public void onFailure(HttpException e) {
-            Log.w(this.toString(), "Failed to login", e);
+        public void onHttpException(HttpException e) {
+            Log.w(RegistrationFragment.class.getName(), "Failed to authenticate with server", e);
+        }
+
+        @Override
+        public void onJsonException(JSONException e) {
+            Log.w(RegistrationFragment.class.getName(), "Malformed JSON in response", e);
+        }
+
+        @Override
+        public void onFailure(Exception e) {
+            Log.w(RegistrationFragment.class.getName(), "Uncaught exception during post requset", e);
         }
     };
 }

@@ -33,6 +33,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.mooo.nilewapps.androidnilewapp.BasicAuthorizationHeader;
 import com.mooo.nilewapps.androidnilewapp.ParcelableRequestEntity;
 import com.mooo.nilewapps.bokbytarappen.R;
 import com.mooo.nilewapps.bokbytarappen.TrustManager;
@@ -106,7 +107,7 @@ public class LoginDialogFragment extends DialogFragment {
         } catch (Exception e) {
             Log.e(this.toString(), "Failed to load trust store in LoginDialogFragment.login", e);
         }
-        PostRequest request = new PostRequest(listener, trustStore, url, profile, password, requestEntity);
+        PostRequest request = new PostRequest(listener, trustStore, url, new BasicAuthorizationHeader(profile, password), requestEntity);
         request.execute();
     }
     

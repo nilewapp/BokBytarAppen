@@ -22,6 +22,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.mooo.nilewapps.androidnilewapp.AuthorizationHeader;
 import com.mooo.nilewapps.androidnilewapp.HttpException;
 import com.mooo.nilewapps.androidnilewapp.HttpPostString;
 
@@ -30,10 +31,8 @@ import android.util.Log;
 
 /**
  * Class that performs an asynchronous HTTP POST request. Always sends
- * the AuthenticationToken stored on the device or a username/password pair
- * to the server. It also expects that an AuthenticationToken should be 
- * sent in the response. The previously stored token is replaced by the
- * received token.
+ * an authorization header to the server. The response is expected to
+ * be a new session token and an arbitrary message in JSON format.
  * @author nilewapp
  *
  */
@@ -51,52 +50,34 @@ public class PostRequest {
     
     private final String url;
     private final List<BasicNameValuePair> requestEntity;
-    private final NilewappAuthHeader authorizationHeader;
-
-    private final String profile;
-    private final String password;
+    private final AuthorizationHeader authorizationHeader;
     
     private final KeyStore trustStore;
     
     private final PostRequestListener listener;
     
     /**
-     * Constructor. Sends the AuthenticationToken with the request.
-     * @param fragment host fragment
-     * @param url service url
-     * @param requestEntity request body
+     * Constructor
+     * @param listener
+     * @param trustStore
+     * @param url
+     * @param authorizationHeader
+     * @param requestEntity
      */
-    public PostRequest(PostRequestListener listener, KeyStore trustStore, String url, NilewappAuthHeader authorizationHeader, List<BasicNameValuePair> requestEntity) {
+    public PostRequest(PostRequestListener listener, KeyStore trustStore, String url, AuthorizationHeader authorizationHeader, List<BasicNameValuePair> requestEntity) {
         this.listener = listener;
         this.url = url;
         this.requestEntity = requestEntity;
         this.authorizationHeader = authorizationHeader;
-        this.profile = null;
-        this.password = null;
         this.trustStore = trustStore;
     }
     
     /**
-     * Constructor. Sends a username/password pair with the request.
-     * @param fragment
-     * @param url
-     * @param profile
-     * @param password
-     * @param requestEntity2
-     */
-    public PostRequest(PostRequestListener listener, KeyStore trustStore, String url, String profile, String password, List<BasicNameValuePair> requestEntity) {
-        this.listener = listener;
-        this.url = url;
-        this.requestEntity = requestEntity;
-        this.authorizationHeader = null;
-        this.profile = profile;
-        this.password = password;
-        this.trustStore = trustStore;
-    }
-    
-    /**
-     * Performs the POST request.
-     * @return the request task
+     * Performs the POST request. On a valid response the listener method 
+     * {@link PostRequestListener#onSuccess(SessMess)} is called on the
+     * SessMess object. If there is an error in the HTTP response 
+     * {@link PostRequestListener#onHttpException(HttpException)} is called on 
+     * the produced HttpException.
      */
     public void execute() {
         PostRequestTask task = new PostRequestTask(); 
@@ -114,17 +95,16 @@ public class PostRequest {
         @Override
         protected SessMess doInBackground(Void...voids) {
             try {
-                if (authorizationHeader != null) {
-                    return toSessMess(HttpPostString.request(trustStore, url, authorizationHeader, requestEntity));
-                } else if (profile != null && password != null) {
-                    return toSessMess(HttpPostString.request(trustStore, url, profile, password, requestEntity));
-                } else {
-                    return null;
-                }
+                return toSessMess(HttpPostString.request(trustStore, url, authorizationHeader, requestEntity));
             } catch (HttpException e) {
-                listener.onFailure(e);
+                listener.onHttpException(e);
+                return null;
+            } catch (JSONException e) {
+                listener.onJsonException(e);
+                Log.e(this.toString(), "Problem with the JSON in response to post request", e);
                 return null;
             } catch (Exception e) {
+                listener.onFailure(e);
                 Log.e(this.toString(), "Uncaught PostRequest exception", e);
                 return null;
             }
@@ -150,6 +130,8 @@ public class PostRequest {
     
     public interface PostRequestListener {
         public void onSuccess(SessMess response);
-        public void onFailure(HttpException e);
+        public void onHttpException(HttpException e);
+        public void onJsonException(JSONException e);
+        public void onFailure(Exception e);
     }
 }
