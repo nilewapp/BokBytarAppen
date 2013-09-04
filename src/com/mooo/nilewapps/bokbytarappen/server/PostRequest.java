@@ -27,7 +27,6 @@ import com.mooo.nilewapps.androidnilewapp.HttpException;
 import com.mooo.nilewapps.androidnilewapp.HttpPostString;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 /**
  * Class that performs an asynchronous HTTP POST request. Always sends
@@ -54,7 +53,7 @@ public class PostRequest {
     
     private final KeyStore trustStore;
     
-    private final PostRequestListener listener;
+    private final PostRequestCallback listener;
     
     /**
      * Constructor
@@ -64,7 +63,7 @@ public class PostRequest {
      * @param authorizationHeader
      * @param requestEntity
      */
-    public PostRequest(PostRequestListener listener, KeyStore trustStore, String url, AuthorizationHeader authorizationHeader, List<BasicNameValuePair> requestEntity) {
+    public PostRequest(PostRequestCallback listener, KeyStore trustStore, String url, AuthorizationHeader authorizationHeader, List<BasicNameValuePair> requestEntity) {
         this.listener = listener;
         this.url = url;
         this.requestEntity = requestEntity;
@@ -73,11 +72,7 @@ public class PostRequest {
     }
     
     /**
-     * Performs the POST request. On a valid response the listener method 
-     * {@link PostRequestListener#onSuccess(SessMess)} is called on the
-     * SessMess object. If there is an error in the HTTP response 
-     * {@link PostRequestListener#onHttpException(HttpException)} is called on 
-     * the produced HttpException.
+     * Performs the POST request.
      */
     public void execute() {
         PostRequestTask task = new PostRequestTask(); 
@@ -98,24 +93,18 @@ public class PostRequest {
                 return toSessMess(HttpPostString.request(trustStore, url, authorizationHeader, requestEntity));
             } catch (HttpException e) {
                 listener.onHttpException(e);
-                return null;
             } catch (JSONException e) {
-                listener.onJsonException(e);
-                Log.e(this.toString(), "Problem with the JSON in response to post request", e);
-                return null;
+                listener.onJsonException(e);                
             } catch (Exception e) {
                 listener.onFailure(e);
-                Log.e(this.toString(), "Uncaught PostRequest exception", e);
-                return null;
             }
+            return null;
         }
         
         @Override
         protected void onPostExecute(SessMess response) {
             if (response != null) {
                 listener.onSuccess(response);
-            } else {
-                Log.w(this.toString(), "Failed to communicate with server");
             }
         }
         
@@ -128,10 +117,39 @@ public class PostRequest {
         }
     }
     
-    public interface PostRequestListener {
+    /**
+     * Interface definition for callback methods to be invoked after
+     * a successful or failed post request.
+     * @author nilewapp
+     *
+     */
+    public interface PostRequestCallback {
+        
+        /**
+         * Called when the request was successfully authenticated and
+         * a syntactically valid response was returned.
+         * @param response
+         */
         public void onSuccess(SessMess response);
+        
+        /**
+         * Called when some HTTP status code other than OK was returned.
+         * @param e
+         */
         public void onHttpException(HttpException e);
+        
+        /**
+         * Called when the HTTP response was OK but the returned JSON
+         * was not of the correct format, i.e. did not contain a valid
+         * session token and an arbitrary message with the correct names.
+         * @param e
+         */
         public void onJsonException(JSONException e);
+        
+        /**
+         * Called when some other error occurred.
+         * @param e
+         */
         public void onFailure(Exception e);
     }
 }

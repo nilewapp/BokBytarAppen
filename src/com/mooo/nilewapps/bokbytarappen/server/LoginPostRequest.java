@@ -25,7 +25,7 @@ import org.json.JSONException;
 import android.support.v4.app.Fragment;
 
 import com.mooo.nilewapps.androidnilewapp.HttpException;
-import com.mooo.nilewapps.bokbytarappen.server.PostRequest.PostRequestListener;
+import com.mooo.nilewapps.bokbytarappen.server.PostRequest.PostRequestCallback;
 import com.mooo.nilewapps.bokbytarappen.view.LoginDialogFragment;
 
 /**
@@ -37,7 +37,7 @@ import com.mooo.nilewapps.bokbytarappen.view.LoginDialogFragment;
  */
 public class LoginPostRequest {
     
-    private final PostRequestListener listener;
+    private final PostRequestCallback listener;
     private final String url;
     private final List<BasicNameValuePair> body;
     private final Fragment targetFragment;
@@ -54,7 +54,7 @@ public class LoginPostRequest {
      */
     public LoginPostRequest(
             Fragment targetFragment,
-            PostRequestListener listener,
+            PostRequestCallback listener,
             KeyStore trustStore,
             String url,
             NilewappAuthHeader authorizationHeader,
@@ -79,7 +79,7 @@ public class LoginPostRequest {
         }
     }
     
-    private PostRequestListener loginDialogPostRequestListener = new PostRequestListener() {
+    private PostRequestCallback loginDialogPostRequestListener = new PostRequestCallback() {
 
         @Override
         public void onSuccess(SessMess response) {
@@ -103,7 +103,7 @@ public class LoginPostRequest {
         
     };
     
-    private PostRequestListener tokenPostRequestListener = new PostRequestListener() {
+    private PostRequestCallback tokenPostRequestListener = new PostRequestCallback() {
         
         @Override
         public void onSuccess(SessMess response) {

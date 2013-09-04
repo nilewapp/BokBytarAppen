@@ -34,6 +34,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mooo.nilewapps.androidnilewapp.FilterableListDialogFragment;
 import com.mooo.nilewapps.androidnilewapp.HttpException;
@@ -46,7 +47,7 @@ import com.mooo.nilewapps.bokbytarappen.server.AuthenticationToken;
 import com.mooo.nilewapps.bokbytarappen.server.LoginPostRequest;
 import com.mooo.nilewapps.bokbytarappen.server.NilewappAuthHeader;
 import com.mooo.nilewapps.bokbytarappen.server.SessMess;
-import com.mooo.nilewapps.bokbytarappen.server.PostRequest.PostRequestListener;
+import com.mooo.nilewapps.bokbytarappen.server.PostRequest.PostRequestCallback;
 
 public class RegistrationFragment extends Fragment
         implements FilterableListDialogFragment.FilterableListDialogListener {
@@ -161,18 +162,20 @@ public class RegistrationFragment extends Fragment
         TokenManager.setToken(getActivity(), new AuthenticationToken("a", "1", "1", 0));
     }
 
-    private PostRequestListener postRequestListener = new PostRequestListener() {
+    private PostRequestCallback postRequestListener = new PostRequestCallback() {
 
         @Override
         public void onSuccess(SessMess response) {
             TokenManager.setToken(getActivity(), response.getToken());
             Preferences.put(getActivity(), R.string.key_authentication_email, response.getToken().getProfile());
             Log.i(RegistrationFragment.class.getName(), response.getMessage());
+            Toast.makeText(getActivity(), "Authentication successful", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onHttpException(HttpException e) {
             Log.w(RegistrationFragment.class.getName(), "Failed to authenticate with server", e);
+            Toast.makeText(getActivity(), "Authentication failed", Toast.LENGTH_SHORT).show();
         }
 
         @Override

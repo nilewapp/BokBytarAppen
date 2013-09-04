@@ -44,7 +44,7 @@ import com.mooo.nilewapps.androidnilewapp.Preferences;
 import com.mooo.nilewapps.bokbytarappen.R;
 import com.mooo.nilewapps.bokbytarappen.TrustManager;
 import com.mooo.nilewapps.bokbytarappen.server.PostRequest;
-import com.mooo.nilewapps.bokbytarappen.server.PostRequest.PostRequestListener;
+import com.mooo.nilewapps.bokbytarappen.server.PostRequest.PostRequestCallback;
 import com.mooo.nilewapps.bokbytarappen.server.SessMess;
 
 /**
@@ -62,15 +62,15 @@ public class LoginDialogFragment extends DialogFragment {
     
     private LinearLayout layout;
     
-    private PostRequestListener listener;
+    private PostRequestCallback listener;
     
-    public static LoginDialogFragment newInstance(PostRequestListener listener, String url, List<BasicNameValuePair> requestEntity) {
+    public static LoginDialogFragment newInstance(PostRequestCallback listener, String url, List<BasicNameValuePair> requestEntity) {
         final LoginDialogFragment d = new LoginDialogFragment();
-        final PostRequestListener requestListener = listener; 
+        final PostRequestCallback requestListener = listener; 
         
         /* Replicates the behaviour of the listener in the arguments, but
            adds a call to the dialog dismiss method on a successful login. */
-        d.listener = new PostRequestListener() {
+        d.listener = new PostRequestCallback() {
             
             @Override
             public void onSuccess(SessMess response) {
