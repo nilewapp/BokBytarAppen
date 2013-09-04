@@ -69,6 +69,4 @@ public class UniversityListDialogFragment extends FilterableListDialogFragment
     public void onLoaderReset(Loader<List<String>> loader) {
         setData(null);
     }
-
-
 }
