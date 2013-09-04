@@ -80,23 +80,21 @@ public class PostRequest {
     }
 
     class PostRequestTask extends AsyncTask<Void, Void, SessMess> {
-
-        private HttpException httpEx = null;
-
-        public HttpException getHttpException() {
-            return httpEx;
-        }
-
+        
+        private HttpException eHttp = null;
+        private JSONException eJson = null;
+        private Exception eOther = null;
+        
         @Override
         protected SessMess doInBackground(Void...voids) {
             try {
                 return toSessMess(HttpPostString.request(trustStore, url, authorizationHeader, requestEntity));
             } catch (HttpException e) {
-                listener.onHttpException(e);
+                eHttp = e;
             } catch (JSONException e) {
-                listener.onJsonException(e);                
+                eJson = e;                
             } catch (Exception e) {
-                listener.onFailure(e);
+                eOther = e;
             }
             return null;
         }
@@ -105,6 +103,12 @@ public class PostRequest {
         protected void onPostExecute(SessMess response) {
             if (response != null) {
                 listener.onSuccess(response);
+            } else if (eHttp != null) {
+                listener.onHttpException(eHttp);
+            } else if (eJson != null) {
+                listener.onJsonException(eJson);
+            } else {
+                listener.onFailure(eOther);
             }
         }
         
