@@ -39,13 +39,19 @@ public class TokenManager {
         String token = Preferences.get(activity, R.string.key_authentication_token);
         String expiration = Preferences.get(activity, R.string.key_authentication_expiration_time, "-1");
         long expirationTime = Long.parseLong(expiration);
-        if (user != null && series != null && token != null) {
+        /* Make sure that there exist a token that hasn't expired */
+        if (user != null && series != null && token != null && expirationTime > System.currentTimeMillis()) {
             return new AuthenticationToken(user, series, token, expirationTime);
         } else {
             return null;
         }
     }
     
+    /**
+     * Stores a token in the preferences.
+     * @param activity
+     * @param token
+     */
     public static void setToken(Activity activity, AuthenticationToken token) {
         Preferences.put(activity, R.string.key_authentication_email, token.getProfile());
         Preferences.put(activity, R.string.key_authentication_series, token.getSeries());
