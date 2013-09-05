@@ -20,5 +20,6 @@
     <string name="url_register">/register</string>
     <string name="url_unregister">/unregister</string>
     <string name="url_university">/universities/</string>
+    <string name="url_change_password">/change-password</string>
 
 </resources>

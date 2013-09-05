@@ -37,5 +37,7 @@
     <string name="unregister">Avregistrera</string>
     <string name="phone_number">Telefonnummer</string>
     <string name="name">Namn</string>
+    <string name="changepassword">Ändra lösenord</string>
+    
     
 </resources>

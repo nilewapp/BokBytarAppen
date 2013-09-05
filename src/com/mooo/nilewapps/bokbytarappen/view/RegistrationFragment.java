@@ -103,7 +103,16 @@ public class RegistrationFragment extends Fragment
             public void onClick(View v) {
                 initToken();
             }
-        });        
+        });       
+       
+        final Button changePasswordButton = (Button) view.findViewById(R.id.changepassword);
+        changePasswordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changePassword();
+            }
+        });
+        
         return layout;
         
     }
@@ -151,25 +160,65 @@ public class RegistrationFragment extends Fragment
         List<BasicNameValuePair> body = new ArrayList<BasicNameValuePair>();
         body.add(new BasicNameValuePair("name", "blubbi"));
         try {
-            LoginPostRequest request = new LoginPostRequest(this, postRequestListener, TrustManager.getKeyStore(getActivity()), url, authorizationHeader, body);
+            LoginPostRequest request = new LoginPostRequest(this, tokenAuthenticationCallback, TrustManager.getKeyStore(getActivity()), url, authorizationHeader, body);
             request.execute();
         } catch (Exception e) {
-            Log.e(this.toString(), "Uncaught exception in RegistrationFragment.tokenAuthenticateUser", e);
+            Log.e(this.toString(), "Uncaught exception", e);
+        }
+    }
+    
+    private void changePassword() {
+        Resources res = getResources();
+        String url = res.getString(R.string.url_server) + res.getString(R.string.url_change_password);
+        List<BasicNameValuePair> body = new ArrayList<BasicNameValuePair>();
+        body.add(new BasicNameValuePair("password", getTextFromId(R.id.password)));
+        try {
+            LoginPostRequest request = new LoginPostRequest(this, changePasswordCallback, TrustManager.getKeyStore(getActivity()), url, null, body);
+            request.execute();
+        } catch (Exception e) {
+            Log.e(this.toString(), "Uncaught exception", e);
         }
     }
     
     private void initToken() {
-        TokenManager.setToken(getActivity(), new AuthenticationToken("a", "1", "1", 0));
+        TokenManager.setToken(getActivity(), AuthenticationToken.newInstance("a", "1", "1", 0));
     }
 
-    private PostRequestCallback postRequestListener = new PostRequestCallback() {
+    private PostRequestCallback tokenAuthenticationCallback = new PostRequestCallback() {
 
         @Override
         public void onSuccess(SessMess response) {
-            TokenManager.setToken(getActivity(), response.getToken());
-            Preferences.put(getActivity(), R.string.key_authentication_email, response.getToken().getProfile());
+            AuthenticationToken token = response.getToken();
+            TokenManager.setToken(getActivity(), token);
+            Preferences.put(getActivity(), R.string.key_authentication_email, token.getProfile());
             Log.i(RegistrationFragment.class.getName(), response.getMessage());
             Toast.makeText(getActivity(), "Authentication successful", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onHttpException(HttpException e) {
+            Log.w(RegistrationFragment.class.getName(), "Failed to authenticate with server", e);
+            Toast.makeText(getActivity(), "Authentication failed", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onJsonException(JSONException e) {
+            Log.w(RegistrationFragment.class.getName(), "Malformed JSON in response", e);
+        }
+
+        @Override
+        public void onFailure(Exception e) {
+            Log.w(RegistrationFragment.class.getName(), "Uncaught exception during post requset", e);
+        }
+    };
+    
+    private PostRequestCallback changePasswordCallback = new PostRequestCallback() {
+
+        @Override
+        public void onSuccess(SessMess response) {
+            TokenManager.clearToken(getActivity());
+            Log.i(RegistrationFragment.class.getName(), response.getMessage());
+            Toast.makeText(getActivity(), "Password successfully changed", Toast.LENGTH_SHORT).show();
         }
 
         @Override

@@ -41,5 +41,6 @@
     <string name="name">Name</string>
     <string name="token">Token Authentication</string>
     <string name="inittoken">Init token</string>
+    <string name="changepassword">Change password</string>
     
 </resources>
