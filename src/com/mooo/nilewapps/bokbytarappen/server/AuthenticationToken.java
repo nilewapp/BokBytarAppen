@@ -36,14 +36,31 @@ public class AuthenticationToken {
     private static final String TOKEN = "token";
     private static final String EXPIRATION_TIME = "expirationTime";
 
-    public AuthenticationToken(JSONObject json) throws JSONException {
+    
+    public static AuthenticationToken newInstance(JSONObject json) {
+        try {
+            return new AuthenticationToken(json);
+        } catch(JSONException e) {
+            return null;
+        }
+    }
+    
+    public static AuthenticationToken newInstance(String user, String series, String token, long expirationTime) {
+        if (user != null && series != null && token != null) {
+            return new AuthenticationToken(user, series, token, expirationTime);
+        } else {
+            return null;
+        }
+    }
+    
+    private AuthenticationToken(JSONObject json) throws JSONException {
         this.profile = json.getString(PROFILE);
         this.series = json.getString(SERIES);
         this.token = json.getString(TOKEN);
         this.expirationTime = json.getLong(EXPIRATION_TIME);
     }
     
-    public AuthenticationToken(String user, String series, String token, long expirationTime) {
+    private AuthenticationToken(String user, String series, String token, long expirationTime) {
         this.profile = user;
         this.series = series;
         this.token = token;

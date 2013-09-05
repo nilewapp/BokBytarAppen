@@ -114,9 +114,14 @@ public class PostRequest {
         
         private SessMess toSessMess(String response) throws JSONException {
             JSONObject json = new JSONObject(response);
-            JSONObject session = json.getJSONObject(TOKEN);
+            AuthenticationToken token;
+            try {
+                JSONObject session = json.getJSONObject(TOKEN);
+                token = AuthenticationToken.newInstance(session);
+            } catch (JSONException e) {
+                token = null;
+            }
             String message = json.getString(MESSAGE);
-            AuthenticationToken token = new AuthenticationToken(session);
             return new SessMess(token, message);
         }
     }
@@ -144,8 +149,8 @@ public class PostRequest {
         
         /**
          * Called when the HTTP response was OK but the returned JSON
-         * was not of the correct format, i.e. did not contain a valid
-         * session token and an arbitrary message with the correct names.
+         * was not of the correct format, i.e. did not contain a
+         * {@link PostRequest#MESSAGE} JSON object.
          * @param e
          */
         public void onJsonException(JSONException e);

@@ -39,9 +39,9 @@ public class TokenManager {
         String token = Preferences.get(activity, R.string.key_authentication_token);
         String expiration = Preferences.get(activity, R.string.key_authentication_expiration_time, "-1");
         long expirationTime = Long.parseLong(expiration);
-        /* Make sure that there exist a token that hasn't expired */
-        if (user != null && series != null && token != null && expirationTime > System.currentTimeMillis()) {
-            return new AuthenticationToken(user, series, token, expirationTime);
+        /* Make sure that the token that hasn't expired */
+        if (expirationTime > System.currentTimeMillis()) {
+            return AuthenticationToken.newInstance(user, series, token, expirationTime);
         } else {
             return null;
         }
@@ -58,4 +58,15 @@ public class TokenManager {
         Preferences.put(activity, R.string.key_authentication_token, token.getToken());
         Preferences.put(activity, R.string.key_authentication_expiration_time, token.getExpirationTime().toString());
     }
+    
+    /**
+     * Removes the stored token. Does not remove the email part of the token.
+     * @param activity
+     */
+    public static void clearToken(Activity activity) {
+        Preferences.put(activity, R.string.key_authentication_series, null);
+        Preferences.put(activity, R.string.key_authentication_token, null);
+        Preferences.put(activity, R.string.key_authentication_expiration_time, "-1");
+    }
+    
 }
