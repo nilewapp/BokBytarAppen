@@ -26,14 +26,14 @@ import android.util.Base64;
 
 public class AuthenticationToken {
     
-    private String profile;
+    private String email;
     private String series;
     private String token;
     private long expirationTime;
     
-    private static final String PROFILE = "profile";
+    private static final String EMAIL  = "email";
     private static final String SERIES = "series";
-    private static final String TOKEN = "token";
+    private static final String TOKEN  = "token";
     private static final String EXPIRATION_TIME = "expirationTime";
 
     
@@ -54,14 +54,14 @@ public class AuthenticationToken {
     }
     
     private AuthenticationToken(JSONObject json) throws JSONException {
-        this.profile = json.getString(PROFILE);
+        this.email = json.getString(EMAIL);
         this.series = json.getString(SERIES);
         this.token = json.getString(TOKEN);
         this.expirationTime = json.getLong(EXPIRATION_TIME);
     }
     
     private AuthenticationToken(String user, String series, String token, long expirationTime) {
-        this.profile = user;
+        this.email = user;
         this.series = series;
         this.token = token;
         this.expirationTime = expirationTime;
@@ -74,7 +74,7 @@ public class AuthenticationToken {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(PROFILE).append("=\"").append(encode(profile)).append("\",");
+        sb.append(EMAIL).append("=\"").append(encode(email)).append("\",");
         sb.append(SERIES).append("=\"").append(encode(series)).append("\",");
         sb.append(TOKEN).append("=\"").append(encode(token)).append("\"");
         return sb.toString();
@@ -83,14 +83,14 @@ public class AuthenticationToken {
     
     public List<BasicNameValuePair> getRequestEntity() {
         List<BasicNameValuePair> body = new ArrayList<BasicNameValuePair>(3);
-        body.add(new BasicNameValuePair(PROFILE, profile));
+        body.add(new BasicNameValuePair(EMAIL, email));
         body.add(new BasicNameValuePair(SERIES, series));
         body.add(new BasicNameValuePair(TOKEN, token));
         return body;
     }
 
     public String getProfile() {
-        return profile;
+        return email;
     }
 
     public String getSeries() {
