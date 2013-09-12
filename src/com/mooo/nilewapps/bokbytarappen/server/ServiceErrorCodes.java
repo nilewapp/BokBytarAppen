@@ -1,0 +1,1 @@
+/home/nilewapp/projects/BokbytarappenServer/src/main/java/com/mooo/nilewapps/bokbytarappen/server/ServiceErrorCodes.java
